@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"carbonfootprint/model"
 	"net/http"
 	"net/mail"
 
@@ -32,7 +31,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user := &model.User{}
+	//user := &model.User{}
 	_, err := mail.ParseAddress(register.Email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -41,7 +40,6 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	user.Email = register.Email
 
 	if register.Firstname == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -50,4 +48,5 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+
 }

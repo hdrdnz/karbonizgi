@@ -9,5 +9,6 @@ import (
 func Load(router *gin.Engine) {
 	router.GET("/person_questions", controllers.GetPersonQues)
 	router.GET("/test", controllers.Test)
+	router.GET("/test2", controllers.Test2)
 
 }

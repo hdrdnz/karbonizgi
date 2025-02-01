@@ -1,1 +1,3 @@
 package config
+
+func GetConnectionString()

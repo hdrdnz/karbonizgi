@@ -58,3 +58,6 @@ func GetPersonQues(c *gin.Context) {
 func Test(c *gin.Context) {
 	c.JSON(http.StatusOK, "başarılı")
 }
+func Test2(c *gin.Context) {
+	c.JSON(http.StatusOK, "düzgün çalışıyor.")
+}

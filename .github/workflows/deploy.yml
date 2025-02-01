@@ -3,7 +3,7 @@ name: Docker Build & Push
 on:
   push:
     branches:
-      - main  # Main branch'e push olduğunda çalıştır
+      - master  # Main branch'e push olduğunda çalıştır
 
 jobs:
   build:
@@ -35,6 +35,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             docker pull havvanur20/karbonizgi:latest
-            docker stop karbonizgi_container || true
-            docker rm karbonizgi_container || true
-            docker run -d --name karbonizgi_container -p 80:80 havvanur20/karbonizgi:latest
+            docker stop karbonizgi || true
+            docker rm karbonizgi || true
+            docker run -d --name karbonizgi -p 8000:8000 havvanur20/karbonizgi:latest

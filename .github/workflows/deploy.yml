@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Repo'yu çek
+      - name: Withdraw the Repo
         uses: actions/checkout@v3
 
-      - name: Docker Hub'a giriş yap
+      - name: Log in Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Docker Image'ı Build Et
         run: docker build -t havvanur20/karbonizgi:latest .
 
-      - name: Docker Hub'a Push Et
+      - name: Push to Docker Hub
         run: |
           docker tag havvanur20/karbonizgi:latest havvanur20/karbonizgi:latest
           docker push havvanur20/karbonizgi:latest

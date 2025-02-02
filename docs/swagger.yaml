@@ -1,0 +1,96 @@
+definitions:
+  controllers.Response:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.UserLogin:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
+  controllers.UserRegister:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+      user_type:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Giriş kısmı
+      parameters:
+      - description: User login details
+        in: body
+        name: UserLogin
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User login successfully
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: User Login
+      tags:
+      - User
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Kayıt kısmı
+      parameters:
+      - description: User registration details
+        in: body
+        name: UserRegister
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UserRegister'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: User Registration
+      tags:
+      - User
+swagger: "2.0"

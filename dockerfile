@@ -10,6 +10,7 @@ RUN go mod download
 
 # Uygulama dosyalarını kopyala
 COPY . .
+COPY .env data config /app/
 
 # Uygulamayı derle
 RUN go build -o app .

@@ -61,6 +61,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/person_questions": {
+            "get": {
+                "description": "Bireysel test kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Test"
+                ],
+                "summary": "Test",
+                "responses": {
+                    "200": {
+                        "description": "User test successfully",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.QuesInf"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "Kayıt kısmı",
@@ -109,6 +144,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.Options": {
+            "type": "object",
+            "properties": {
+                "emission": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.QuesInf": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "options": {
+                    "$ref": "#/definitions/controllers.Options"
+                },
+                "question": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Response": {
             "type": "object",
             "properties": {
@@ -137,6 +197,9 @@ const docTemplate = `{
         "controllers.UserRegister": {
             "type": "object",
             "properties": {
+                "company_name": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },

@@ -1,4 +1,20 @@
 definitions:
+  controllers.Options:
+    properties:
+      emission:
+        type: string
+      text:
+        type: string
+    type: object
+  controllers.QuesInf:
+    properties:
+      key:
+        type: string
+      options:
+        $ref: '#/definitions/controllers.Options'
+      question:
+        type: string
+    type: object
   controllers.Response:
     properties:
       data:
@@ -17,6 +33,8 @@ definitions:
     type: object
   controllers.UserRegister:
     properties:
+      company_name:
+        type: string
       email:
         type: string
       first_name:
@@ -63,6 +81,29 @@ paths:
       summary: User Login
       tags:
       - User
+  /person_questions:
+    get:
+      consumes:
+      - application/json
+      description: Bireysel test kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User test successfully
+          schema:
+            $ref: '#/definitions/controllers.QuesInf'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Test
+      tags:
+      - Test
   /register:
     post:
       consumes:

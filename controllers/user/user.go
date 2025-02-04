@@ -20,12 +20,13 @@ var secretKey = []byte("./secret.key")
 var Claims jwt.Claims
 
 type UserRegister struct {
-	Email     string `json:"email"`
-	Firstname string `json:"first_name"`
-	Lastname  string `json:"last_name"`
-	UserName  string `json:"user_name"`
-	UserType  string `json:"user_type"`
-	Password  string `json:"password"`
+	Email       string `json:"email"`
+	Firstname   string `json:"first_name"`
+	Lastname    string `json:"last_name"`
+	UserName    string `json:"user_name"`
+	UserType    string `json:"user_type"`
+	CompanyName string `json:"company_name"`
+	Password    string `json:"password"`
 }
 
 type UserLogin struct {
@@ -50,6 +51,7 @@ type Response struct {
 // @Failure      500 {object} Response "Internal server error"
 // @Router       /register [post]
 func Register(c *gin.Context) {
+	fmt.Println("register kısmı")
 	db := model.GetDB()
 	var register UserRegister
 	if err := c.ShouldBindJSON(&register); err != nil {
@@ -70,7 +72,7 @@ func Register(c *gin.Context) {
 		return
 	}
 	var count int64
-	db.Table("user").Where("email=?", register.Email).Count(&count)
+	db.Table("user").Where("email = ?", register.Email).Count(&count)
 
 	if count != 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -133,6 +135,14 @@ func Register(c *gin.Context) {
 		user.UserType = "person"
 	} else if register.UserType == "company" {
 		user.UserType = "company"
+		if register.CompanyName == "" || len(register.CompanyName) < 3 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"status":  "error",
+				"message": "Geçerli bir şirket ismi giriniz.",
+			})
+			return
+		}
+		user.CompanyName = register.CompanyName
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -289,16 +299,17 @@ func Login(c *gin.Context) {
 
 func RequireAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		custom := c.GetHeader("Custom-Header")
-		if custom == "" || custom != os.Getenv("Custom-Header") {
+		custom := c.GetHeader("Custom_Header")
+		if custom == "" || custom != os.Getenv("Custom_Header") {
 			c.JSON(http.StatusBadRequest, nil)
 			c.Abort()
+			return
 		}
 		auth := c.GetHeader("Authorization")
 		if auth == "" || !strings.HasPrefix(auth, "Bearer ") {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
-				"message": "Yetkisi erişim",
+				"message": "Yetkisiz erişim",
 			})
 			c.Abort()
 		}

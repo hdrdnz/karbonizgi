@@ -14,8 +14,9 @@ import (
 func Load(router *gin.Engine) {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(files.Handler))
 	router.POST("/register", user.Register)
-	router.Use(user.RequireAuth())
+
 	router.POST("/login", user.Login)
+	router.Use(user.RequireAuth())
 
 	router.GET("/person_questions", controllers.GetPersonQues)
 	router.GET("/test", controllers.Test)

@@ -21,8 +21,17 @@ type Options struct {
 	Emission string
 }
 
+// @Summary      Test
+// @Description  Bireysel test kısmı
+// @Tags         Test
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} QuesInf "User test successfully"
+// @Failure      400 {object} controllers.Response "Invalid request"
+// @Router       /person_questions [get]
 func GetPersonQues(c *gin.Context) {
-	file, err := os.Open("person.json")
+
+	file, err := os.Open("./data/person.json")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",

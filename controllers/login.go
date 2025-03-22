@@ -1,23 +1,16 @@
 package controllers
 
 import (
-	"carbonfootprint/controllers"
 	"carbonfootprint/model"
-	"fmt"
 	"net/http"
 	"net/mail"
-	"os"
 	"regexp"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/golang-jwt/jwt"
 	"gorm.io/gorm"
 )
-
-var secretKey = []byte("./secret.key")
-var Claims jwt.Claims
 
 type UserRegister struct {
 	Email       string `json:"email"`
@@ -45,13 +38,11 @@ type Response struct {
 // @Tags         User
 // @Accept       json
 // @Produce      json
-// @Param        UserRegister body UserRegister true "User registration details"
-// @Success      200 {object} Response "User registered successfully"
+// @Param        UserRegister body UserRegister true "user_type kısmına kullanıcı kişi ise 'person' şirket ise 'company' girmelisin. Kullanıcı bireysel ise company_name girmene gerek yok."
+// @Success      200 {object} Response "success"
 // @Failure      400 {object} Response "Invalid request"
-// @Failure      500 {object} Response "Internal server error"
 // @Router       /register [post]
 func Register(c *gin.Context) {
-	fmt.Println("register kısmı")
 	db := model.GetDB()
 	var register UserRegister
 	if err := c.ShouldBindJSON(&register); err != nil {
@@ -107,7 +98,7 @@ func Register(c *gin.Context) {
 	if register.UserName == "" || len(register.UserName) < 4 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
-			"message": "Lütfen geçerli  bir  soyisim giriniz.",
+			"message": "Lütfen geçerli  bir kullanıcı adı giriniz.",
 		})
 		return
 	}
@@ -168,7 +159,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	password, err := controllers.HashPassword(register.Password)
+	password, err := HashPassword(register.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -178,7 +169,7 @@ func Register(c *gin.Context) {
 	}
 
 	user.Password = password
-	if err := db.Save(&user); err != nil {
+	if err := db.Save(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu.",
@@ -199,7 +190,6 @@ func Register(c *gin.Context) {
 // @Param        UserLogin body UserLogin true "User login details"
 // @Success      200 {object} Response "User login successfully"
 // @Failure      400 {object} Response "Invalid request"
-// @Failure      500 {object} Response "Internal server error"
 // @Router       /login [post]
 func Login(c *gin.Context) {
 	db := model.GetDB()
@@ -242,11 +232,10 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-
-	if !controllers.CheckPasswordHash(login.Password, user.Password) {
+	if !CheckPasswordHash(login.Password, user.Password) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
-			"message": "Hatalı kullanıcı adı ya da şifre",
+			"message": "Hatalı kullanıcı adı ya da şifre1",
 		})
 		return
 	}
@@ -297,52 +286,42 @@ func Login(c *gin.Context) {
 
 }
 
-func RequireAuth() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		custom := c.GetHeader("Custom_Header")
-		if custom == "" || custom != os.Getenv("Custom_Header") {
-			c.JSON(http.StatusBadRequest, nil)
-			c.Abort()
-			return
-		}
-		auth := c.GetHeader("Authorization")
-		if auth == "" || !strings.HasPrefix(auth, "Bearer ") {
+// @Summary      User Logout
+// @Description  Çıkış kısmı
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200 {object} Response "User Logout successfully"
+// @Router       /logout [post]
+func Logout(c *gin.Context) {
+	db := model.GetDB()
+	userToken := &model.UserToken{}
+
+	if err := db.Where("id=?", Claims["userId"]).First(&userToken).Error; err != nil && err != gorm.ErrRecordNotFound {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Bir hata oluştu",
+		})
+		return
+	}
+	if userToken.Id != 0 {
+		if err := db.Delete(&model.UserToken{}, userToken.Id).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
-				"message": "Yetkisiz erişim",
+				"message": "Bir hata oluştu",
 			})
-			c.Abort()
+			return
 		}
-
-		tokenString := strings.TrimPrefix(auth, "Bearer ")
-		token, err := ValidateToken(tokenString)
-		if err != nil {
-			c.Abort()
-		}
-		claims, ok := token.Claims.(jwt.MapClaims)
-		if !ok {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"status":  "error",
-				"message": "Token hatası",
-			})
-			c.Abort()
-		}
-		Claims = claims
-		c.Next()
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Bir hata oluştu",
+		})
+		return
 	}
-}
-
-func ValidateToken(tokenString string) (*jwt.Token, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("geçersiz imzalama yöntemi")
-		}
-		return secretKey, nil
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "success",
+		"message": "Başarılı çıkış",
 	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return token, nil
 }

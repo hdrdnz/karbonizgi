@@ -11,26 +11,6 @@
         }
       },
       {
-        "key": "waste_management",
-        "question": "Üretim sırasında atık yönetimi nasıl yapılmaktadır?",
-        "options": {
-          "A": { "text": "Atıkların tamamı geri dönüştürülüyor", "emission": 50 },
-          "B": { "text": "Atıkların yarısı geri dönüştürülüyor", "emission": 150 },
-          "C": { "text": "Atıkların çoğu bertaraf ediliyor (geri dönüşüm yok)", "emission": 300 },
-          "D": { "text": "Atıklar düzenli depolama alanlarına gönderiliyor", "emission": 400 }
-        }
-      },
-      {
-        "key": "transportation_method",
-        "question": "Hammaddelerin taşınmasında hangi taşıma yöntemi kullanılmaktadır?",
-        "options": {
-          "A": { "text": "Elektrikli araçlar", "emission": 50 },
-          "B": { "text": "Kamyonlar (dizel)", "emission": 300 },
-          "C": { "text": "Demiryolu", "emission": 150 },
-          "D": { "text": "Havayolu taşımacılığı", "emission": 500 }
-        }
-      },
-      {
         "key": "production_efficiency",
         "question": "Üretim süreçlerinde enerji verimliliği sağlamak için ne kadar yatırım yapılıyor?",
         "options": {
@@ -41,16 +21,6 @@
         }
       },
       {
-        "key": "water_usage",
-        "question": "Üretim süreçlerinde su kullanımı nasıl yönetiliyor?",
-        "options": {
-          "A": { "text": "Yağmur suyu toplama ve geri dönüşüm sistemleri kullanılıyor", "emission": 50 },
-          "B": { "text": "Sadece verimli musluk ve sistemler kullanılıyor", "emission": 150 },
-          "C": { "text": "Su tüketimine yönelik önlemler minimum düzeyde", "emission": 300 },
-          "D": { "text": "Herhangi bir su tasarruf önlemi alınmıyor", "emission": 400 }
-        }
-      },
-      {
         "key": "machine_efficiency",
         "question": "Kullandığınız makinelerin enerji verimliliği ne seviyededir?",
         "options": {
@@ -58,36 +28,6 @@
           "B": { "text": "Kısmen enerji verimli makineler kullanılıyor", "emission": 150 },
           "C": { "text": "Eski makineler, verimlilik açısından yetersiz", "emission": 300 },
           "D": { "text": "Makine bakımları yapılmadığı için verim çok düşük", "emission": 500 }
-        }
-      },
-      {
-        "key": "supply_chain_distance",
-        "question": "Hammaddelerinizin çoğu nereden temin ediliyor?",
-        "options": {
-          "A": { "text": "Yerel tedarikçilerden (100 km'den az)", "emission": 50 },
-          "B": { "text": "Ülke içi tedarikçilerden (100-1000 km)", "emission": 150 },
-          "C": { "text": "Komşu ülkelerden", "emission": 300 },
-          "D": { "text": "Uzak mesafeli uluslararası tedarikçilerden", "emission": 500 }
-        }
-      },
-      {
-        "key": "packaging_material",
-        "question": "Ürünlerinizin paketlenmesinde hangi malzemeler kullanılmaktadır?",
-        "options": {
-          "A": { "text": "Tamamen geri dönüştürülebilir malzemeler", "emission": 50 },
-          "B": { "text": "Kısmen geri dönüştürülebilir malzemeler", "emission": 150 },
-          "C": { "text": "Plastik ve tek kullanımlık malzemeler", "emission": 300 },
-          "D": { "text": "Hiçbir çevre dostu malzeme kullanılmıyor", "emission": 400 }
-        }
-      },
-      {
-        "key": "transport_efficiency",
-        "question": "Ürünlerinizin nakliyesinde hangi yöntem kullanılıyor?",
-        "options": {
-          "A": { "text": "Elektrikli araçlar veya hibrit sistemler", "emission": 50 },
-          "B": { "text": "Demiryolu taşımacılığı", "emission": 150 },
-          "C": { "text": "Dizel kamyonlar", "emission": 300 },
-          "D": { "text": "Havayolu taşımacılığı", "emission": 500 }
         }
       },
       {
@@ -103,16 +43,6 @@
     ],
     "energy_transportation": [
     {
-      "key": "energy_source",
-      "question": "Kullandığınız enerji kaynağı nedir?",
-      "options": {
-        "A": { "text": "Yenilenebilir enerji (güneş, rüzgar)", "emission": 50 },
-        "B": { "text": "Doğalgaz", "emission": 200 },
-        "C": { "text": "Kömür", "emission": 400 },
-        "D": { "text": "Elektrik (şebeke)", "emission": 300 }
-      }
-    },
-    {
       "key": "fuel_type",
       "question": "Kullandığınız ulaşım araçlarının yakıt türü nedir?",
       "options": {
@@ -123,26 +53,6 @@
       }
     },
     {
-      "key": "daily_commute_distance",
-      "question": "Günlük ulaşımdaki ortalama mesafeniz nedir?",
-      "options": {
-        "A": { "text": "0-5 km", "emission": 50 },
-        "B": { "text": "6-20 km", "emission": 150 },
-        "C": { "text": "21-50 km", "emission": 300 },
-        "D": { "text": "50 km üzeri", "emission": 400 }
-      }
-    },
-    {
-      "key": "public_transport_usage",
-      "question": "Toplu taşıma kullanım oranınız nedir?",
-      "options": {
-        "A": { "text": "Her zaman", "emission": 50 },
-        "B": { "text": "Sıklıkla", "emission": 100 },
-        "C": { "text": "Nadiren", "emission": 300 },
-        "D": { "text": "Hiç kullanmıyorum", "emission": 400 }
-      }
-    },
-    {
       "key": "renewable_investments",
       "question": "Yenilenebilir enerji projelerine yatırım yapıyor musunuz?",
       "options": {
@@ -150,26 +60,6 @@
         "B": { "text": "Evet, sınırlı düzeyde", "emission": 150 },
         "C": { "text": "Planlama aşamasındayız", "emission": 300 },
         "D": { "text": "Hayır, yatırım yapılmıyor", "emission": 400 }
-      }
-    },
-    {
-      "key": "vehicle_efficiency",
-      "question": "Kullandığınız araçların enerji verimliliği ne düzeydedir?",
-      "options": {
-        "A": { "text": "Çok yüksek (elektrikli veya hibrit)", "emission": 50 },
-        "B": { "text": "Orta (yakıt tasarruflu modeller)", "emission": 150 },
-        "C": { "text": "Düşük (eski modeller)", "emission": 300 },
-        "D": { "text": "Çok düşük (verimsiz araçlar)", "emission": 400 }
-      }
-    },
-    {
-      "key": "logistics_transport",
-      "question": "Lojistik süreçlerinizde hangi taşımacılık yöntemi tercih ediliyor?",
-      "options": {
-        "A": { "text": "Elektrikli veya demiryolu taşımacılığı", "emission": 50 },
-        "B": { "text": "Kamyonlar (dizel)", "emission": 300 },
-        "C": { "text": "Havayolu taşımacılığı", "emission": 500 },
-        "D": { "text": "Diğer yöntemler", "emission": 150 }
       }
     },
     {
@@ -191,119 +81,7 @@
         "C": { "text": "Düşük düzeyde önlemler", "emission": 300 },
         "D": { "text": "Hiçbir önlem alınmıyor", "emission": 400 }
       }
-    },
-    {
-      "key": "alternative_transport",
-      "question": "Alternatif ulaşım yöntemleri (bisiklet, elektrikli scooter) kullanılıyor mu?",
-      "options": {
-        "A": { "text": "Evet, yaygın olarak kullanılıyor", "emission": 50 },
-        "B": { "text": "Evet, belirli durumlarda", "emission": 150 },
-        "C": { "text": "Nadiren kullanılıyor", "emission": 300 },
-        "D": { "text": "Hiç kullanılmıyor", "emission": 400 }
-      }
     }
-    ],
-    "agriculture_food_resources": [
-        {
-        "key": "farming_method",
-        "question": "Tarımsal üretim yönteminiz nedir?",
-        "options": {
-            "A": { "text": "Organik tarım", "emission": 50 },
-            "B": { "text": "Sürdürülebilir tarım", "emission": 100 },
-            "C": { "text": "Yoğun tarım", "emission": 300 },
-            "D": { "text": "Endüstriyel tarım", "emission": 400 }
-        }
-        },
-        {
-        "key": "irrigation_method",
-        "question": "Sulama yöntemi olarak hangisini kullanıyorsunuz?",
-        "options": {
-            "A": { "text": "Damlama sulama", "emission": 50 },
-            "B": { "text": "Yağmurlama sulama", "emission": 150 },
-            "C": { "text": "Açık kanal sulama", "emission": 300 },
-            "D": { "text": "Hiçbir su tasarruf yöntemi kullanılmıyor", "emission": 400 }
-        }
-        },
-        {
-        "key": "fertilizer_usage",
-        "question": "Hangi tür gübre kullanıyorsunuz?",
-        "options": {
-            "A": { "text": "Organik gübre", "emission": 50 },
-            "B": { "text": "Az miktarda kimyasal gübre", "emission": 150 },
-            "C": { "text": "Yoğun kimyasal gübre", "emission": 300 },
-            "D": { "text": "Sadece kimyasal gübre", "emission": 400 }
-        }
-        },
-        {
-        "key": "pesticide_usage",
-        "question": "Zirai ilaç (pestisit) kullanımı ne düzeydedir?",
-        "options": {
-            "A": { "text": "Hiç kullanılmıyor", "emission": 50 },
-            "B": { "text": "Sınırlı miktarda", "emission": 150 },
-            "C": { "text": "Düzenli kullanılıyor", "emission": 300 },
-            "D": { "text": "Yoğun şekilde kullanılıyor", "emission": 400 }
-        }
-        },
-        {
-        "key": "food_transportation",
-        "question": "Gıda ürünlerinin taşınmasında hangi yöntem kullanılmaktadır?",
-        "options": {
-            "A": { "text": "Yerel tedarik (100 km'den az)", "emission": 50 },
-            "B": { "text": "Ülke içi tedarik", "emission": 150 },
-            "C": { "text": "Uzak mesafeli uluslararası taşımacılık", "emission": 300 },
-            "D": { "text": "Havayolu taşımacılığı", "emission": 400 }
-        }
-        },
-        {
-        "key": "waste_management",
-        "question": "Tarımsal atıkların yönetimi nasıl yapılmaktadır?",
-        "options": {
-            "A": { "text": "Tamamen geri dönüştürülüyor", "emission": 50 },
-            "B": { "text": "Kısmen geri dönüştürülüyor", "emission": 150 },
-            "C": { "text": "Atıkların çoğu düzenli depolanıyor", "emission": 300 },
-            "D": { "text": "Hiçbir geri dönüşüm yapılmıyor", "emission": 400 }
-        }
-        },
-        {
-        "key": "natural_resource_usage",
-        "question": "Doğal kaynak kullanımında hangi yaklaşımı benimsiyorsunuz?",
-        "options": {
-            "A": { "text": "Kaynakları koruma ve sürdürülebilirlik", "emission": 50 },
-            "B": { "text": "Kısmi koruma", "emission": 150 },
-            "C": { "text": "Kaynakları yoğun kullanma", "emission": 300 },
-            "D": { "text": "Kaynak israfı", "emission": 400 }
-        }
-        },
-        {
-        "key": "packaging_material",
-        "question": "Gıda ürünlerinin paketlenmesinde hangi tür malzemeler kullanılmaktadır?",
-        "options": {
-            "A": { "text": "Tamamen geri dönüştürülebilir malzemeler", "emission": 50 },
-            "B": { "text": "Kısmen geri dönüştürülebilir malzemeler", "emission": 150 },
-            "C": { "text": "Plastik ve tek kullanımlık malzemeler", "emission": 300 },
-            "D": { "text": "Hiçbir çevre dostu malzeme kullanılmıyor", "emission": 400 }
-        }
-        },
-        {
-        "key": "local_production",
-        "question": "Üretiminizin ne kadarı yerel pazarlara yönelik yapılmaktadır?",
-        "options": {
-            "A": { "text": "Tamamı yerel pazara", "emission": 50 },
-            "B": { "text": "Çoğu yerel pazara", "emission": 150 },
-            "C": { "text": "Az bir kısmı yerel pazara", "emission": 300 },
-            "D": { "text": "Hiçbiri yerel pazara değil", "emission": 400 }
-        }
-        },
-        {
-        "key": "water_usage_efficiency",
-        "question": "Su kullanımında verimlilik sağlamak için hangi yöntemler uygulanıyor?",
-        "options": {
-            "A": { "text": "Yağmur suyu toplama ve geri dönüşüm", "emission": 50 },
-            "B": { "text": "Su tasarruflu sulama sistemleri", "emission": 150 },
-            "C": { "text": "Standart sulama yöntemleri", "emission": 300 },
-            "D": { "text": "Hiçbir önlem alınmıyor", "emission": 400 }
-        }
-        }
     ],
     "service_trade": [
         {
@@ -314,16 +92,6 @@
             "B": { "text": "Orta (%50-%80 verimlilik)", "emission": 150 },
             "C": { "text": "Düşük (%30-%50 verimlilik)", "emission": 300 },
             "D": { "text": "Hiç (%30 altı verimlilik)", "emission": 400 }
-        }
-        },
-        {
-        "key": "supply_chain_distance",
-        "question": "Tedarik zincirinizin mesafesi ne kadar?",
-        "options": {
-            "A": { "text": "Yerel (100 km altı)", "emission": 50 },
-            "B": { "text": "Ulusal (100-1000 km)", "emission": 150 },
-            "C": { "text": "Komşu ülkeler (1000-3000 km)", "emission": 300 },
-            "D": { "text": "Uzak (3000 km üzeri)", "emission": 400 }
         }
         },
         {
@@ -344,16 +112,6 @@
             "B": { "text": "Orta (%50-90)", "emission": 150 },
             "C": { "text": "Düşük (%10-50)", "emission": 300 },
             "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "transportation_method",
-        "question": "Taşıma yöntemlerinizin karbon emisyonu seviyesi nedir?",
-        "options": {
-            "A": { "text": "Düşük (elektrikli araçlar)", "emission": 50 },
-            "B": { "text": "Orta (demiryolu)", "emission": 150 },
-            "C": { "text": "Yüksek (dizel kamyonlar)", "emission": 300 },
-            "D": { "text": "Çok yüksek (havayolu)", "emission": 400 }
         }
         },
         {
@@ -395,16 +153,6 @@
             "C": { "text": "Nadiren (%10-50)", "emission": 300 },
             "D": { "text": "Hiç (%10 altı)", "emission": 400 }
         }
-        },
-        {
-        "key": "service_delivery",
-        "question": "Hizmet teslimatlarınız çevreci yöntemlerle mi yapılıyor?",
-        "options": {
-            "A": { "text": "Tamamen çevreci (elektrikli araçlar, %90-100)", "emission": 50 },
-            "B": { "text": "Kısmen çevreci (düşük emisyonlu araçlar, %50-90)", "emission": 150 },
-            "C": { "text": "Standart araçlar (%10-50)", "emission": 300 },
-            "D": { "text": "Çevre dostu olmayan (%10 altı)", "emission": 400 }
-        }
         }
     ],
     "public_waste_management": [
@@ -429,36 +177,6 @@
         }
         },
         {
-        "key": "organic_waste_management",
-        "question": "Organik atıklarınızın ne kadarı kompostlanıyor?",
-        "options": {
-            "A": { "text": "Tamamı (%90-100)", "emission": 50 },
-            "B": { "text": "Çoğu (%50-90)", "emission": 150 },
-            "C": { "text": "Azı (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "hazardous_waste_treatment",
-        "question": "Tehlikeli atıkların güvenli bertaraf oranı nedir?",
-        "options": {
-            "A": { "text": "Tam (%90-100)", "emission": 50 },
-            "B": { "text": "Çoğu (%50-90)", "emission": 150 },
-            "C": { "text": "Azı (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "public_transportation_use",
-        "question": "Toplu taşıma kullanım oranı nedir?",
-        "options": {
-            "A": { "text": "Çok yaygın (%90-100)", "emission": 50 },
-            "B": { "text": "Yaygın (%50-90)", "emission": 150 },
-            "C": { "text": "Az (%10-50)", "emission": 300 },
-            "D": { "text": "Çok az (%10 altı)", "emission": 400 }
-        }
-        },
-        {
         "key": "recycling_initiatives",
         "question": "Geri dönüşüm bilgilendirme kampanyalarınızın etkinlik oranı nedir?",
         "options": {
@@ -476,36 +194,6 @@
             "B": { "text": "Orta (%50-90)", "emission": 150 },
             "C": { "text": "Düşük (%10-50)", "emission": 300 },
             "D": { "text": "Çok düşük (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "waste_to_energy_conversion",
-        "question": "Atıklardan enerji elde etme oranınız nedir?",
-        "options": {
-            "A": { "text": "Yüksek (%90-100)", "emission": 50 },
-            "B": { "text": "Orta (%50-90)", "emission": 150 },
-            "C": { "text": "Düşük (%10-50)", "emission": 300 },
-            "D": { "text": "Çok düşük (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "landfill_reduction",
-        "question": "Düzenli depolama alanlarına gönderilen atık oranını ne kadar azaltabildiniz?",
-        "options": {
-            "A": { "text": "Çok düşük depolama (%90-100)", "emission": 50 },
-            "B": { "text": "Düşük depolama (%50-90)", "emission": 150 },
-            "C": { "text": "Orta depolama (%10-50)", "emission": 300 },
-            "D": { "text": "Yüksek depolama (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "water_reuse_rate",
-        "question": "Atık suyun yeniden kullanım oranı nedir?",
-        "options": {
-            "A": { "text": "Tamamen yeniden kullanılıyor (%90-100)", "emission": 50 },
-            "B": { "text": "Çoğu yeniden kullanılıyor (%50-90)", "emission": 150 },
-            "C": { "text": "Az yeniden kullanım (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç yeniden kullanılmıyor (%10 altı)", "emission": 400 }
         }
         }
     ]   

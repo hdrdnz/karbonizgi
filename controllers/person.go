@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -11,23 +10,21 @@ import (
 )
 
 type QuesInf struct {
-	Key      string
-	Question string
-	Options  Options
+	Key      string  `json:"key"`
+	Question string  `json:"question"`
+	Options  Options `json:"options"`
 }
 
 type Options struct {
-	Text     string
-	Emission string
+	Text     string `json:"text"`
+	Emission string `json:"emission"`
 }
 
-// @Summary      Test
 // @Description  Bireysel test kısmı
 // @Tags         Test
 // @Accept       json
 // @Produce      json
-// @Success      200 {object} QuesInf "User test successfully"
-// @Failure      400 {object} controllers.Response "Invalid request"
+// @Success      200 {object} QuesInf
 // @Router       /person_questions [get]
 func GetPersonQues(c *gin.Context) {
 
@@ -47,10 +44,7 @@ func GetPersonQues(c *gin.Context) {
 		})
 		return
 	}
-
-	//var questions QuesInf
 	ques := make(map[string]interface{})
-	fmt.Println("deneme:", string(byteFile))
 	if err := json.Unmarshal(byteFile, &ques); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -64,9 +58,40 @@ func GetPersonQues(c *gin.Context) {
 
 }
 
-func Test(c *gin.Context) {
-	c.JSON(http.StatusOK, "başarılı")
-}
-func Test2(c *gin.Context) {
-	c.JSON(http.StatusOK, "düzgün çalışıyor.")
+// @Description  Şirket test kısmı
+// @Tags         Test
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} QuesInf
+// @Router       /company_questions [get]
+func GetCompanyQues(c *gin.Context) {
+
+	file, err := os.Open("./data/company2.json")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Error opening file",
+		})
+		return
+	}
+	byteFile, err := io.ReadAll(file)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Error reading file",
+		})
+		return
+	}
+	ques := make(map[string]interface{})
+	if err := json.Unmarshal(byteFile, &ques); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"eror":    err,
+			"message": "Something went worong.",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, ques)
+
 }

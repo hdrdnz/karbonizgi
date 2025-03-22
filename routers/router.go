@@ -2,7 +2,6 @@ package router
 
 import (
 	"carbonfootprint/controllers"
-	user "carbonfootprint/controllers/user"
 
 	_ "carbonfootprint/docs"
 
@@ -13,13 +12,14 @@ import (
 
 func Load(router *gin.Engine) {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(files.Handler))
-	router.POST("/register", user.Register)
+	router.POST("/register", controllers.Register)
+	router.GET("/person-questions", controllers.GetPersonQues)
+	router.GET("/company-questions", controllers.GetCompanyQues)
+	router.POST("/login", controllers.Login)
+	router.POST("/logout", controllers.Logout)
 
-	router.POST("/login", user.Login)
-	router.Use(user.RequireAuth())
-
-	router.GET("/person_questions", controllers.GetPersonQues)
-	router.GET("/test", controllers.Test)
-	router.GET("/test2", controllers.Test2)
+	router.Use(controllers.RequireAuth())
+	router.POST("/score", controllers.Score)
+	router.POST("/chat", controllers.PostChat)
 
 }

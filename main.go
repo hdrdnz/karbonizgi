@@ -1,15 +1,23 @@
 package main
 
 import (
-	"carbonfootprint/controllers"
+	"carbonfootprint/config"
 	"carbonfootprint/model"
 	router "carbonfootprint/routers"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
+// @title KARBONİZGİ
+// @host https://karbonizgi.leaflove.com.tr
 func main() {
-	controllers.LoadEnv()
+	_, err := config.LoadConfig("./config/config.json")
+	if err != nil {
+		log.Fatal("Config dosyası yüklenemedi:", err)
+	}
+	config.LoadRedis()
+	config.LoadClient()
 	model.SetDB()
 	r := gin.Default()
 	router.Load(r)

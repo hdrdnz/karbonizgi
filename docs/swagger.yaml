@@ -6,6 +6,15 @@ definitions:
       text:
         type: string
     type: object
+  controllers.PersonInf:
+    properties:
+      message:
+        type: string
+      score:
+        type: string
+      userId:
+        type: integer
+    type: object
   controllers.QuesInf:
     properties:
       key:
@@ -15,6 +24,13 @@ definitions:
       question:
         type: string
     type: object
+  controllers.QuestionSub:
+    properties:
+      score:
+        type: integer
+      sub_key:
+        type: string
+    type: object
   controllers.Response:
     properties:
       data:
@@ -22,6 +38,15 @@ definitions:
       message:
         type: string
       status:
+        type: string
+    type: object
+  controllers.ScoreInfo:
+    properties:
+      question_key:
+        items:
+          $ref: '#/definitions/controllers.QuestionSub'
+        type: array
+      question_name:
         type: string
     type: object
   controllers.UserLogin:
@@ -48,9 +73,56 @@ definitions:
       user_type:
         type: string
     type: object
+host: https://karbonizgi.leaflove.com.tr
 info:
   contact: {}
+  title: KARBONİZGİ
 paths:
+  /chat:
+    post:
+      consumes:
+      - application/json
+      description: Chat Kısmı
+      parameters:
+      - description: Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score
+          bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı
+          devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin.
+        in: body
+        name: PersonInf
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PersonInf'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Message kısmını kullanıcıya gösterebilirsin.Eğer kullanıcı
+            karbonayak izi dışında sorular sorarsa chat cevap vermez karbon ayak izine
+            yönlendirir.2 kere gereksiz soru sorulursa data kısmında 'false' döner
+            ve burada chat konuşmasını bitir sonra message kısmını kullanıcıya gösterebilirsin.
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: User chat Kısmı
+      tags:
+      - chat
+  /company_questions:
+    get:
+      consumes:
+      - application/json
+      description: Şirket test kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.QuesInf'
+      tags:
+      - Test
   /login:
     post:
       consumes:
@@ -74,11 +146,24 @@ paths:
           description: Invalid request
           schema:
             $ref: '#/definitions/controllers.Response'
-        "500":
-          description: Internal server error
+      summary: User Login
+      tags:
+      - User
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Çıkış kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User Logout successfully
           schema:
             $ref: '#/definitions/controllers.Response'
-      summary: User Login
+      security:
+      - BearerAuth: []
+      summary: User Logout
       tags:
       - User
   /person_questions:
@@ -90,18 +175,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: User test successfully
+          description: OK
           schema:
             $ref: '#/definitions/controllers.QuesInf'
-        "400":
-          description: Invalid request
-          schema:
-            $ref: '#/definitions/controllers.Response'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/controllers.Response'
-      summary: Test
       tags:
       - Test
   /register:
@@ -110,7 +186,8 @@ paths:
       - application/json
       description: Kayıt kısmı
       parameters:
-      - description: User registration details
+      - description: user_type kısmına kullanıcı kişi ise 'person' şirket ise 'company'
+          girmelisin. Kullanıcı bireysel ise company_name girmene gerek yok.
         in: body
         name: UserRegister
         required: true
@@ -120,18 +197,43 @@ paths:
       - application/json
       responses:
         "200":
-          description: User registered successfully
+          description: success
           schema:
             $ref: '#/definitions/controllers.Response'
         "400":
           description: Invalid request
           schema:
             $ref: '#/definitions/controllers.Response'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/controllers.Response'
       summary: User Registration
       tags:
       - User
+  /score:
+    post:
+      consumes:
+      - application/json
+      description: Karbon Ayak İzi Hesaplanması
+      parameters:
+      - description: /company-questions ve /person-questions endpointlerinde belli
+          bir key value değerine göre soruları döndüm. Bu değerleri kullanarak question_name
+          ve question_key değerlerini ekleyebilirsin.
+        in: body
+        name: ScoreInfo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ScoreInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: data kısmında kullanıcının karbon ayak izi değeri döner.Chat
+            kısmında bu kısmı kullanacaksın.
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: User Puan Kısmı
+      tags:
+      - Score
 swagger: "2.0"

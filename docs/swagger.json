@@ -1,9 +1,73 @@
 {
     "swagger": "2.0",
     "info": {
+        "title": "KARBONİZGİ",
         "contact": {}
     },
+    "host": "https://karbonizgi.leaflove.com.tr",
     "paths": {
+        "/chat": {
+            "post": {
+                "description": "Chat Kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chat"
+                ],
+                "summary": "User chat Kısmı",
+                "parameters": [
+                    {
+                        "description": "Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin.",
+                        "name": "PersonInf",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PersonInf"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Message kısmını kullanıcıya gösterebilirsin.Eğer kullanıcı karbonayak izi dışında sorular sorarsa chat cevap vermez karbon ayak izine yönlendirir.2 kere gereksiz soru sorulursa data kısmında 'false' döner ve burada chat konuşmasını bitir sonra message kısmını kullanıcıya gösterebilirsin.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/company_questions": {
+            "get": {
+                "description": "Şirket test kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Test"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.QuesInf"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Giriş kısmı",
@@ -40,9 +104,31 @@
                         "schema": {
                             "$ref": "#/definitions/controllers.Response"
                         }
-                    },
-                    "500": {
-                        "description": "Internal server error",
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Çıkış kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "User Logout",
+                "responses": {
+                    "200": {
+                        "description": "User Logout successfully",
                         "schema": {
                             "$ref": "#/definitions/controllers.Response"
                         }
@@ -62,24 +148,11 @@
                 "tags": [
                     "Test"
                 ],
-                "summary": "Test",
                 "responses": {
                     "200": {
-                        "description": "User test successfully",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/controllers.QuesInf"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Response"
                         }
                     }
                 }
@@ -100,7 +173,7 @@
                 "summary": "User Registration",
                 "parameters": [
                     {
-                        "description": "User registration details",
+                        "description": "user_type kısmına kullanıcı kişi ise 'person' şirket ise 'company' girmelisin. Kullanıcı bireysel ise company_name girmene gerek yok.",
                         "name": "UserRegister",
                         "in": "body",
                         "required": true,
@@ -111,7 +184,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User registered successfully",
+                        "description": "success",
                         "schema": {
                             "$ref": "#/definitions/controllers.Response"
                         }
@@ -121,9 +194,43 @@
                         "schema": {
                             "$ref": "#/definitions/controllers.Response"
                         }
+                    }
+                }
+            }
+        },
+        "/score": {
+            "post": {
+                "description": "Karbon Ayak İzi Hesaplanması",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Score"
+                ],
+                "summary": "User Puan Kısmı",
+                "parameters": [
+                    {
+                        "description": "/company-questions ve /person-questions endpointlerinde belli bir key value değerine göre soruları döndüm. Bu değerleri kullanarak question_name ve question_key değerlerini ekleyebilirsin.",
+                        "name": "ScoreInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ScoreInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data kısmında kullanıcının karbon ayak izi değeri döner.Chat kısmında bu kısmı kullanacaksın.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
                     },
-                    "500": {
-                        "description": "Internal server error",
+                    "400": {
+                        "description": "Invalid request",
                         "schema": {
                             "$ref": "#/definitions/controllers.Response"
                         }
@@ -144,6 +251,20 @@
                 }
             }
         },
+        "controllers.PersonInf": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
         "controllers.QuesInf": {
             "type": "object",
             "properties": {
@@ -158,6 +279,17 @@
                 }
             }
         },
+        "controllers.QuestionSub": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "type": "integer"
+                },
+                "sub_key": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Response": {
             "type": "object",
             "properties": {
@@ -168,6 +300,20 @@
                     "type": "string"
                 },
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.ScoreInfo": {
+            "type": "object",
+            "properties": {
+                "question_key": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.QuestionSub"
+                    }
+                },
+                "question_name": {
                     "type": "string"
                 }
             }

@@ -1,5 +1,5 @@
 {
-  "energy": [ 
+  "energy": [
     {
       "key": "heating_method",
       "question": "Evde Isınma Yönteminiz Nedir?",
@@ -27,19 +27,19 @@
       "question": "Kullandığınız Araç Türü Nedir?",
       "options": {
         "A": {"text": "Aracım yok", "emission": 0},
-        "B": {"text": "Elektrikli veya Hibrit", "emission": 15},
-        "C": {"text": "Benzinli", "emission": 192},
-        "D": {"text": "Dizel", "emission": 171}
+        "B": {"text": "Elektrikli veya Hibrit", "emission": 0.015},
+        "C": {"text": "Benzinli", "emission": 0.192},
+        "D": {"text": "Dizel", "emission": 0.171}
       }
     },
     {
       "key": "daily_distance",
       "question": "Günlük Ortalama Kaç Kilometre Araç Kullanıyorsunuz?",
       "options": {
-        "A": {"text": "0-5 km", "emission": 0.96},
-        "B": {"text": "6-20 km", "emission": 3.84},
-        "C": {"text": "21-50 km", "emission": 9.6},
-        "D": {"text": "50 km ve üzeri", "emission": 19.2}
+        "A": {"text": "0-5 km", "emission": 5},
+        "B": {"text": "6-20 km", "emission": 20},
+        "C": {"text": "21-50 km", "emission": 50},
+        "D": {"text": "50 km ve üzeri", "emission": 100}
       }
     },
     {
@@ -144,7 +144,7 @@
       "key": "household_size",
       "question": "Kaç Kişi ile Aynı Evde Yaşıyorsunuz?",
       "options": {
-        "A": {"text": "1 kişi (yalnız yaşıyorum)", "emission": 150},
+        "A": {"text": "1 kişi", "emission": 150},
         "B": {"text": "2-3 kişi", "emission": 100},
         "C": {"text": "4-5 kişi", "emission": 75},
         "D": {"text": "6 kişi veya daha fazla", "emission": 50}

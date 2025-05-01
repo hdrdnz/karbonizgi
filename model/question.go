@@ -3,11 +3,11 @@ package model
 import "time"
 
 type QuestionTypes struct {
-	Id          int       `gorm:"primaryKey;autoIncrement"`
-	UserType    string    `gorm:"size:45;"`
-	QuestionKey string    `gorm:"size:45;"`
-	CreatedAt   time.Time `gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `gorm:"autoUpdateTime"`
+	Id           int       `gorm:"primaryKey;autoIncrement"`
+	QuestionType string    `gorm:"size:45;"`
+	QuestionKey  string    `gorm:"size:45;"`
+	CreatedAt    time.Time `gorm:"autoCreateTime"`
+	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
 }
 
 type QuestionSubhead struct {
@@ -39,12 +39,12 @@ type UserScore struct {
 }
 
 type SubScore struct {
-	Id                int `gorm:"primaryKey;autoIncrement"`
-	UserScoreId       int `gorm:"not null;index"`
-	QuestionSubheadId int `gorm:"not null;index"`
-	Score             int `gorm:"not null;index"`
+	Id                int     `gorm:"primaryKey;autoIncrement"`
+	UserDetailScoreId int     `gorm:"not null;index"`
+	QuestionSubheadId int     `gorm:"not null;index"`
+	Score             float64 `gorm:"not null;index"`
 	QuestionSubhead   QuestionSubhead
-	UserScore         UserDetailScore
+	UserDetailScore   UserDetailScore
 	CreatedAt         time.Time `gorm:"autoCreateTime"`
 	UpdatedAt         time.Time `gorm:"autoUpdateTime"`
 }

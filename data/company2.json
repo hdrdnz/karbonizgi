@@ -1,200 +1,201 @@
 {
-    "industry": [
-      {
-        "key": "energy_source",
-        "question": "Tesisinizin enerji kaynağı nedir?",
-        "options": {
-          "A": { "text": "Yenilenebilir enerji (güneş, rüzgar)", "emission": 50 },
-          "B": { "text": "Doğalgaz", "emission": 200 },
-          "C": { "text": "Kömür", "emission": 400 },
-          "D": { "text": "Elektrik (şebeke)", "emission": 300 }
-        }
-      },
-      {
-        "key": "production_efficiency",
-        "question": "Üretim süreçlerinde enerji verimliliği sağlamak için ne kadar yatırım yapılıyor?",
-        "options": {
-          "A": { "text": "Yüksek düzeyde (enerji verimliliği teknolojileri kullanılıyor)", "emission": 50 },
-          "B": { "text": "Orta düzeyde (bazı enerji tasarruf önlemleri)", "emission": 150 },
-          "C": { "text": "Düşük düzeyde (minimum önlem alınıyor)", "emission": 300 },
-          "D": { "text": "Hiçbir yatırım yapılmıyor", "emission": 500 }
-        }
-      },
-      {
-        "key": "machine_efficiency",
-        "question": "Kullandığınız makinelerin enerji verimliliği ne seviyededir?",
-        "options": {
-          "A": { "text": "Yeni nesil yüksek verimli makineler kullanılıyor", "emission": 50 },
-          "B": { "text": "Kısmen enerji verimli makineler kullanılıyor", "emission": 150 },
-          "C": { "text": "Eski makineler, verimlilik açısından yetersiz", "emission": 300 },
-          "D": { "text": "Makine bakımları yapılmadığı için verim çok düşük", "emission": 500 }
-        }
-      },
-      {
-        "key": "employee_commute",
-        "question": "Çalışanlarınızın işe gelip gitme yöntemleri nelerdir?",
-        "options": {
-          "A": { "text": "Toplu taşıma veya bisiklet kullanıyorlar", "emission": 50 },
-          "B": { "text": "Carpooling (araba paylaşımı) yapıyorlar", "emission": 100 },
-          "C": { "text": "Kendi araçlarıyla geliyorlar", "emission": 300 },
-          "D": { "text": "Uzak mesafelerden bireysel araçlarla geliyorlar", "emission": 400 }
-        }
+  "industry": [
+    {
+      "key": "energy_source",
+      "question": "Tesisinizin enerji kaynağı nedir?",
+      "options": {
+        "A": { "text": "Yenilenebilir enerji (güneş, rüzgar)", "emission": 100 },
+        "B": { "text": "Doğalgaz", "emission": 3200 },
+        "C": { "text": "Kömür", "emission": 5200 },
+        "D": { "text": "Elektrik (şebeke)", "emission": 4000 }
       }
-    ],
-    "energy_transportation": [
+    },
+    {
+      "key": "production_efficiency",
+      "question": "Üretim süreçlerinde enerji verimliliği sağlamak için ne kadar yatırım yapılıyor?",
+      "options": {
+        "A": { "text": "Yüksek düzeyde (enerji verimliliği teknolojileri kullanılıyor)", "emission": 500 },
+        "B": { "text": "Orta düzeyde (bazı enerji tasarruf önlemleri)", "emission": 2000 },
+        "C": { "text": "Düşük düzeyde (minimum önlem alınıyor)", "emission": 3500 },
+        "D": { "text": "Hiçbir yatırım yapılmıyor", "emission": 5000 }
+      }
+    },
+    {
+      "key": "machine_efficiency",
+      "question": "Kullandığınız makinelerin enerji verimliliği ne seviyededir?",
+      "options": {
+        "A": { "text": "Yeni nesil yüksek verimli makineler kullanılıyor", "emission": 500 },
+        "B": { "text": "Kısmen enerji verimli makineler kullanılıyor", "emission": 1500 },
+        "C": { "text": "Eski makineler, verimlilik açısından yetersiz", "emission": 3000 },
+        "D": { "text": "Makine bakımları yapılmadığı için verim çok düşük", "emission": 4800 }
+      }
+    },
+    {
+      "key": "employee_commute",
+      "question": "Çalışanlarınızın işe gelip gitme yöntemleri nelerdir?",
+      "options": {
+        "A": { "text": "Toplu taşıma veya bisiklet kullanıyorlar", "emission": 500 },
+        "B": { "text": "Carpooling (araba paylaşımı) yapıyorlar", "emission": 1000 },
+        "C": { "text": "Kendi araçlarıyla geliyorlar", "emission": 2500 },
+        "D": { "text": "Uzak mesafelerden bireysel araçlarla geliyorlar", "emission": 4000 }
+      }
+    }
+  ],
+  "energy_transportation": [
     {
       "key": "fuel_type",
       "question": "Kullandığınız ulaşım araçlarının yakıt türü nedir?",
       "options": {
-        "A": { "text": "Elektrik", "emission": 50 },
-        "B": { "text": "Hibrit (elektrik ve benzin)", "emission": 150 },
-        "C": { "text": "Benzin", "emission": 300 },
-        "D": { "text": "Dizel", "emission": 400 }
+        "A": { "text": "Elektrik", "emission": 1440 },
+        "B": { "text": "Hibrit (elektrik ve benzin)", "emission": 2160 },
+        "C": { "text": "Benzin", "emission": 3000 },
+        "D": { "text": "Dizel", "emission": 3240 }
       }
     },
     {
       "key": "renewable_investments",
       "question": "Yenilenebilir enerji projelerine yatırım yapıyor musunuz?",
       "options": {
-        "A": { "text": "Evet, kapsamlı şekilde", "emission": 50 },
-        "B": { "text": "Evet, sınırlı düzeyde", "emission": 150 },
-        "C": { "text": "Planlama aşamasındayız", "emission": 300 },
-        "D": { "text": "Hayır, yatırım yapılmıyor", "emission": 400 }
+        "A": { "text": "Evet, kapsamlı şekilde", "emission": 300 },
+        "B": { "text": "Evet, sınırlı düzeyde", "emission": 1000 },
+        "C": { "text": "Planlama aşamasındayız", "emission": 2000 },
+        "D": { "text": "Hayır, yatırım yapılmıyor", "emission": 3000 }
       }
     },
     {
       "key": "charging_stations",
       "question": "Elektrikli araçlar için şarj istasyonlarına yatırım yapıyor musunuz?",
       "options": {
-        "A": { "text": "Evet, geniş çapta", "emission": 50 },
-        "B": { "text": "Evet, sınırlı düzeyde", "emission": 150 },
-        "C": { "text": "Planlanıyor", "emission": 300 },
-        "D": { "text": "Hayır, yatırım yapılmıyor", "emission": 400 }
+        "A": { "text": "Evet, geniş çapta", "emission": 300 },
+        "B": { "text": "Evet, sınırlı düzeyde", "emission": 1000 },
+        "C": { "text": "Planlanıyor", "emission": 2000 },
+        "D": { "text": "Hayır, yatırım yapılmıyor", "emission": 3000 }
       }
     },
     {
       "key": "energy_efficiency_measures",
       "question": "Enerji verimliliği artırma amacıyla hangi önlemleri alıyorsunuz?",
       "options": {
-        "A": { "text": "Yüksek verimli teknolojiler ve ekipmanlar", "emission": 50 },
-        "B": { "text": "Kısmen enerji tasarrufu önlemleri", "emission": 150 },
-        "C": { "text": "Düşük düzeyde önlemler", "emission": 300 },
-        "D": { "text": "Hiçbir önlem alınmıyor", "emission": 400 }
+        "A": { "text": "Yüksek verimli teknolojiler ve ekipmanlar", "emission": 500 },
+        "B": { "text": "Kısmen enerji tasarrufu önlemleri", "emission": 1500 },
+        "C": { "text": "Düşük düzeyde önlemler", "emission": 3000 },
+        "D": { "text": "Hiçbir önlem alınmıyor", "emission": 4200 }
       }
     }
-    ],
-    "service_trade": [
-        {
-        "key": "energy_efficiency_in_facilities",
-        "question": "Tesislerinizde enerji verimliliği için ne kadar önlem alıyorsunuz?",
-        "options": {
-            "A": { "text": "Yüksek (%80 üzeri verimlilik)", "emission": 50 },
-            "B": { "text": "Orta (%50-%80 verimlilik)", "emission": 150 },
-            "C": { "text": "Düşük (%30-%50 verimlilik)", "emission": 300 },
-            "D": { "text": "Hiç (%30 altı verimlilik)", "emission": 400 }
-        }
-        },
-        {
-        "key": "waste_management",
-        "question": "Atıklarınızın ne kadarı geri dönüştürülüyor?",
-        "options": {
-            "A": { "text": "Tamamı (%90-100)", "emission": 50 },
-            "B": { "text": "Çoğu (%50-90)", "emission": 150 },
-            "C": { "text": "Azı (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "digital_transformation",
-        "question": "Hizmetlerinizin dijitalleşme oranı nedir?",
-        "options": {
-            "A": { "text": "Yüksek (%90-100)", "emission": 50 },
-            "B": { "text": "Orta (%50-90)", "emission": 150 },
-            "C": { "text": "Düşük (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "packaging_policy",
-        "question": "Ambalaj malzemelerinizin geri dönüşüm oranı nedir?",
-        "options": {
-            "A": { "text": "Tamamen geri dönüştürülebilir (%90-100)", "emission": 50 },
-            "B": { "text": "Kısmen geri dönüştürülebilir (%50-90)", "emission": 150 },
-            "C": { "text": "Az geri dönüşümlü (%10-50)", "emission": 300 },
-            "D": { "text": "Geri dönüşümsüz (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "employee_commute",
-        "question": "Çalışanlarınızın işe gelirken kullandığı yöntem nedir?",
-        "options": {
-            "A": { "text": "Toplu taşıma (%80 üzeri)", "emission": 50 },
-            "B": { "text": "Araba paylaşımı (%50-80)", "emission": 100 },
-            "C": { "text": "Bireysel araçlar (%30-50)", "emission": 300 },
-            "D": { "text": "Uzak mesafeli araçlar (%30 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "renewable_energy_use",
-        "question": "Enerji ihtiyacınızın ne kadarı yenilenebilir kaynaklardan sağlanıyor?",
-        "options": {
-            "A": { "text": "Çoğu (%80 üzeri)", "emission": 50 },
-            "B": { "text": "Kısmen (%50-80)", "emission": 150 },
-            "C": { "text": "Az (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "customer_engagement",
-        "question": "Müşterilere karbon ayak izi azaltımı için bilgilendirme yapıyor musunuz?",
-        "options": {
-            "A": { "text": "Sürekli (%80 üzeri)", "emission": 50 },
-            "B": { "text": "Ara sıra (%50-80)", "emission": 150 },
-            "C": { "text": "Nadiren (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        }
-    ],
-    "public_waste_management": [
-        {
-        "key": "waste_recycling_rate",
-        "question": "Atıklarınızın geri dönüşüm oranı nedir?",
-        "options": {
-            "A": { "text": "Tamamı (%90-100)", "emission": 50 },
-            "B": { "text": "Çoğu (%50-90)", "emission": 150 },
-            "C": { "text": "Azı (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "waste_separation_facility",
-        "question": "Atık ayrıştırma tesislerinizin kapasitesi nedir?",
-        "options": {
-            "A": { "text": "Yüksek (%80 üzeri)", "emission": 50 },
-            "B": { "text": "Orta (%50-80)", "emission": 150 },
-            "C": { "text": "Düşük (%30-50)", "emission": 300 },
-            "D": { "text": "Çok düşük (%30 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "recycling_initiatives",
-        "question": "Geri dönüşüm bilgilendirme kampanyalarınızın etkinlik oranı nedir?",
-        "options": {
-            "A": { "text": "Tam etkinlik (%90-100)", "emission": 50 },
-            "B": { "text": "Yüksek etkinlik (%50-90)", "emission": 150 },
-            "C": { "text": "Az etkinlik (%10-50)", "emission": 300 },
-            "D": { "text": "Hiç (%10 altı)", "emission": 400 }
-        }
-        },
-        {
-        "key": "renewable_energy_projects",
-        "question": "Yenilenebilir enerji projelerinizin enerji katkısı nedir?",
-        "options": {
-            "A": { "text": "Yüksek (%90-100)", "emission": 50 },
-            "B": { "text": "Orta (%50-90)", "emission": 150 },
-            "C": { "text": "Düşük (%10-50)", "emission": 300 },
-            "D": { "text": "Çok düşük (%10 altı)", "emission": 400 }
-        }
-        }
-    ]   
+  ],
+ "service_trade": [
+    {
+      "key": "energy_efficiency_in_facilities",
+      "question": "Tesislerinizde enerji verimliliği için ne kadar önlem alıyorsunuz?",
+      "options": {
+        "A": { "text": "Yüksek (%80 üzeri verimlilik)", "emission": 400 },
+        "B": { "text": "Orta (%50-%80 verimlilik)", "emission": 1500 },
+        "C": { "text": "Düşük (%30-%50 verimlilik)", "emission": 3000 },
+        "D": { "text": "Hiç (%30 altı verimlilik)", "emission": 4500 }
+      }
+    },
+    {
+      "key": "waste_management",
+      "question": "Atıklarınızın ne kadarı geri dönüştürülüyor?",
+      "options": {
+        "A": { "text": "Tamamı (%90-100)", "emission": 300 },
+        "B": { "text": "Çoğu (%50-90)", "emission": 1200 },
+        "C": { "text": "Azı (%10-50)", "emission": 2500 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 4000 }
+      }
+    },
+    {
+      "key": "digital_transformation",
+      "question": "Hizmetlerinizin dijitalleşme oranı nedir?",
+      "options": {
+        "A": { "text": "Yüksek (%90-100)", "emission": 200 },
+        "B": { "text": "Orta (%50-90)", "emission": 1000 },
+        "C": { "text": "Düşük (%10-50)", "emission": 2200 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 3500 }
+      }
+    },
+    {
+      "key": "packaging_policy",
+      "question": "Ambalaj malzemelerinizin geri dönüşüm oranı nedir?",
+      "options": {
+        "A": { "text": "Tamamen geri dönüştürülebilir (%90-100)", "emission": 300 },
+        "B": { "text": "Kısmen geri dönüştürülebilir (%50-90)", "emission": 1200 },
+        "C": { "text": "Az geri dönüşümlü (%10-50)", "emission": 2800 },
+        "D": { "text": "Geri dönüşümsüz (%10 altı)", "emission": 4200 }
+      }
+    },
+    {
+      "key": "employee_commute",
+      "question": "Çalışanlarınızın işe gelirken kullandığı yöntem nedir?",
+      "options": {
+        "A": { "text": "Toplu taşıma (%80 üzeri)", "emission": 600 },
+        "B": { "text": "Araba paylaşımı (%50-80)", "emission": 1200 },
+        "C": { "text": "Bireysel araçlar (%30-50)", "emission": 3000 },
+        "D": { "text": "Uzak mesafeli araçlar (%30 altı)", "emission": 4200 }
+      }
+    },
+    {
+      "key": "renewable_energy_use",
+      "question": "Enerji ihtiyacınızın ne kadarı yenilenebilir kaynaklardan sağlanıyor?",
+      "options": {
+        "A": { "text": "Çoğu (%80 üzeri)", "emission": 300 },
+        "B": { "text": "Kısmen (%50-80)", "emission": 1200 },
+        "C": { "text": "Az (%10-50)", "emission": 3000 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 4500 }
+      }
+    },
+    {
+      "key": "customer_engagement",
+      "question": "Müşterilere karbon ayak izi azaltımı için bilgilendirme yapıyor musunuz?",
+      "options": {
+        "A": { "text": "Sürekli (%80 üzeri)", "emission": 200 },
+        "B": { "text": "Ara sıra (%50-80)", "emission": 800 },
+        "C": { "text": "Nadiren (%10-50)", "emission": 2000 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 3200 }
+      }
+    }
+  ],
+  "public_waste_management": [
+    {
+      "key": "waste_recycling_rate",
+      "question": "Atıklarınızın geri dönüşüm oranı nedir?",
+      "options": {
+        "A": { "text": "Tamamı (%90-100)", "emission": 400 },
+        "B": { "text": "Çoğu (%50-90)", "emission": 1200 },
+        "C": { "text": "Azı (%10-50)", "emission": 3000 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 4500 }
+      }
+    },
+    {
+      "key": "waste_separation_facility",
+      "question": "Atık ayrıştırma tesislerinizin kapasitesi nedir?",
+      "options": {
+        "A": { "text": "Yüksek (%80 üzeri)", "emission": 500 },
+        "B": { "text": "Orta (%50-80)", "emission": 1500 },
+        "C": { "text": "Düşük (%30-50)", "emission": 3200 },
+        "D": { "text": "Çok düşük (%30 altı)", "emission": 4600 }
+      }
+    },
+    {
+      "key": "recycling_initiatives",
+      "question": "Geri dönüşüm bilgilendirme kampanyalarınızın etkinlik oranı nedir?",
+      "options": {
+        "A": { "text": "Tam etkinlik (%90-100)", "emission": 300 },
+        "B": { "text": "Yüksek etkinlik (%50-90)", "emission": 1200 },
+        "C": { "text": "Az etkinlik (%10-50)", "emission": 2800 },
+        "D": { "text": "Hiç (%10 altı)", "emission": 4200 }
+      }
+    },
+    {
+      "key": "renewable_energy_projects",
+      "question": "Yenilenebilir enerji projelerinizin enerji katkısı nedir?",
+      "options": {
+        "A": { "text": "Yüksek (%90-100)", "emission": 300 },
+        "B": { "text": "Orta (%50-90)", "emission": 1200 },
+        "C": { "text": "Düşük (%10-50)", "emission": 2500 },
+        "D": { "text": "Çok düşük (%10 altı)", "emission": 4000 }
+      }
+    }
+  ]  
 }  
+

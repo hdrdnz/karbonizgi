@@ -1,4 +1,100 @@
 definitions:
+  controllers.AllScores:
+    properties:
+      score:
+        type: number
+      score_date:
+        type: string
+    type: object
+  controllers.CalData:
+    properties:
+      sections:
+        items:
+          $ref: '#/definitions/controllers.CalSection'
+        type: array
+      title:
+        type: string
+    type: object
+  controllers.CalItem:
+    properties:
+      content:
+        type: string
+    type: object
+  controllers.CalSection:
+    properties:
+      content:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/controllers.CalItem'
+        type: array
+      subtitle:
+        type: string
+      type:
+        type: string
+    type: object
+  controllers.CallDataResp:
+    properties:
+      data:
+        $ref: '#/definitions/controllers.CalData'
+    type: object
+  controllers.Comment:
+    properties:
+      answer:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.Data:
+    properties:
+      image:
+        type: string
+      sections:
+        items:
+          $ref: '#/definitions/controllers.Section'
+        type: array
+      title:
+        type: string
+    type: object
+  controllers.DataResp:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.Data'
+        type: array
+    type: object
+  controllers.DataScore:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.AllScores'
+        type: array
+      status:
+        type: string
+    type: object
+  controllers.DetailResp:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.DetailScore'
+        type: array
+    type: object
+  controllers.DetailScore:
+    properties:
+      questionSubType:
+        type: string
+      questionType:
+        type: string
+      subScore:
+        type: number
+    type: object
+  controllers.Item:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    type: object
   controllers.Options:
     properties:
       emission:
@@ -8,6 +104,10 @@ definitions:
     type: object
   controllers.PersonInf:
     properties:
+      filter:
+        type: string
+      key:
+        type: string
       message:
         type: string
       score:
@@ -27,7 +127,7 @@ definitions:
   controllers.QuestionSub:
     properties:
       score:
-        type: integer
+        type: number
       sub_key:
         type: string
     type: object
@@ -47,6 +147,63 @@ definitions:
           $ref: '#/definitions/controllers.QuestionSub'
         type: array
       question_name:
+        type: string
+    type: object
+  controllers.Section:
+    properties:
+      content:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/controllers.Item'
+        type: array
+      subtitle:
+        type: string
+      type:
+        description: -paragraph ve list olarak ayrılır. list ise item kısmı paragraph
+          ise content kısmı doldurulur.
+        type: string
+    type: object
+  controllers.Suggest:
+    properties:
+      action:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.SuggestIds:
+    properties:
+      action:
+        type: string
+      action_id:
+        type: integer
+      status:
+        type: string
+    type: object
+  controllers.SuggestResp:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+    type: object
+  controllers.UserInfo:
+    properties:
+      companyName:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      userType:
+        type: string
+      username:
         type: string
     type: object
   controllers.UserLogin:
@@ -73,11 +230,63 @@ definitions:
       user_type:
         type: string
     type: object
+  controllers.UserSug:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/controllers.SuggestIds'
+        type: array
+      status:
+        type: string
+    type: object
 host: https://karbonizgi.leaflove.com.tr
 info:
   contact: {}
   title: KARBONİZGİ
 paths:
+  /add-suggest:
+    post:
+      consumes:
+      - application/json
+      description: Aksiyon Ekleme Kısmı
+      parameters:
+      - description: 'status değeri için sadece ''planned,in_progress,completed,cancelled''
+          değerlerden biri gönderilmelidir. '
+        in: body
+        name: Suggest
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Suggest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Kullanıcı aksiyon ekleme
+      tags:
+      - Action
+  /cal-info:
+    get:
+      consumes:
+      - application/json
+      description: Hesaplama yöntemi bilgilendirme kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Hesaplama için bilgiler yer alır.Sections kısmında yazı yer
+            alır. type 'paragraph' ise content içerisinde yazı bulunur. Eğer type
+            'list' ise items içerisinde content olarak yazılar yer alır.
+          schema:
+            $ref: '#/definitions/controllers.CallDataResp'
+      tags:
+      - Data
   /chat:
     post:
       consumes:
@@ -87,6 +296,9 @@ paths:
       - description: Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score
           bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı
           devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin.
+          Filter kısmında main ya da detail ifadelerini göndermelisin. main için key
+          kısmını girmene gerek yok ama detail kısmında key kısmına alt başlığın key
+          bilgisini, score kısmına da alt başlıkta aldığı skoru göndermelisin.
         in: body
         name: PersonInf
         required: true
@@ -109,7 +321,29 @@ paths:
       summary: User chat Kısmı
       tags:
       - chat
-  /company_questions:
+  /comments:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı soru-cevap kısmı
+      parameters:
+      - description: person ya da company ifadesi girilir.
+        in: query
+        name: user_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kullanıcı eleştiri soru cevap kısımları bulunur.
+          schema:
+            items:
+              $ref: '#/definitions/controllers.Comment'
+            type: array
+      tags:
+      - Data
+  /company-questions:
     get:
       consumes:
       - application/json
@@ -123,6 +357,39 @@ paths:
             $ref: '#/definitions/controllers.QuesInf'
       tags:
       - Test
+  /data:
+    get:
+      consumes:
+      - application/json
+      description: Genel bilgilendirme kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Anasayfa için güncel bilgiler yer alır. Rastgele üç veri bulunur.Sections
+            kısmında yazılar yer alır. type 'paragraph' ise content içerisinde yazı
+            bulunur. Eğer type 'list' ise items içerisinde title ve content olarak
+            yazılar yer alır.
+          schema:
+            $ref: '#/definitions/controllers.DataResp'
+      tags:
+      - Data
+  /detail-score:
+    get:
+      consumes:
+      - application/json
+      description: Detay skor bilgileri
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'Kullanıcıya ait soru alt başlıklarına göre questiontype:temel
+            soru başlığını ,QuestionSubType : alt soru başlığını ve SubScore ise alt
+            başlığa ait değeri içerir.Bu kısımlar chat kısmı için kullanılır.'
+          schema:
+            $ref: '#/definitions/controllers.DetailResp'
+      tags:
+      - Score
   /login:
     post:
       consumes:
@@ -166,7 +433,7 @@ paths:
       summary: User Logout
       tags:
       - User
-  /person_questions:
+  /person-questions:
     get:
       consumes:
       - application/json
@@ -214,8 +481,8 @@ paths:
       description: Karbon Ayak İzi Hesaplanması
       parameters:
       - description: /company-questions ve /person-questions endpointlerinde belli
-          bir key value değerine göre soruları döndüm. Bu değerleri kullanarak question_name
-          ve question_key değerlerini ekleyebilirsin.
+          bir key value değerleri bulunamktadır. Bu değerleri kullanarak question_name
+          ve question_key değerleri eklenir.
         in: body
         name: ScoreInfo
         required: true
@@ -236,4 +503,68 @@ paths:
       summary: User Puan Kısmı
       tags:
       - Score
+  /score-info:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı skor bilgileri
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kullanıcıya ait skor puanını ve skor tarihini geri döndürür.
+          schema:
+            $ref: '#/definitions/controllers.DataScore'
+      summary: Kullanıcı skor bilgileri
+      tags:
+      - Score
+  /suggested:
+    get:
+      consumes:
+      - application/json
+      description: Örnek aksiyonlar
+      parameters:
+      - description: person ya da company ifadesi girilir.
+        in: query
+        name: user_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kullanıcıya aksiyon önerileri için kullanılır.s
+          schema:
+            $ref: '#/definitions/controllers.SuggestResp'
+      tags:
+      - Data
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı bilgileri kısmı
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.UserInfo'
+      tags:
+      - User
+  /user-suggest:
+    get:
+      consumes:
+      - application/json
+      description: Kullanıcı Aksiyon Kayıtları
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/controllers.UserSug'
+      summary: Kullanıcı aksiyon
+      tags:
+      - Action
 swagger: "2.0"

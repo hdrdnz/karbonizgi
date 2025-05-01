@@ -26,6 +26,20 @@ type UserToken struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`                                 // Otomatik güncellenme zamanı
 }
 
+type UserAction struct {
+	Id        int    `gorm:"primaryKey;autoIncrement"`
+	UserId    int    `gorm:"not null;index"`
+	Action    string `gorm:"type:varchar(255);not null"`
+	Status    string `gorm:"type:varchar(255);not null"`
+	User      User
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
 func Migrate() {
-	Db.AutoMigrate(&User{}, &UserToken{})
+	Db.AutoMigrate(
+		&User{},
+		&UserToken{},
+		&UserAction{},
+	)
 }

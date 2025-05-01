@@ -1,0 +1,50 @@
+{
+    "title": "Hesaplama Yöntemi",
+    "sections": [
+      {
+        "subtitle": "Genel Bilgilendirme",
+        "type": "paragraph",
+        "content": "Karbonİzgi uygulamasında karbon ayak izi hesaplamaları, uluslararası kabul görmüş ISO 14064 standardı çerçevesinde gerçekleştirilmiştir. Hem bireysel hem de kurumsal kullanıcıların test yanıtları, belirlenmiş emisyon katsayıları doğrultusunda değerlendirilir ve sonuçlar yıllık bazda toplam tahmini karbon dioksit eşdeğeri (CO₂e) olarak hesaplanır.",
+        "items": []
+      },
+      {
+        "subtitle": "Hesaplama Yaklaşımımız",
+        "type": "list",
+        "content": "",
+        "items": [
+          {
+            "content": "Emisyon kaynakları (enerji, ulaşım, beslenme, atık yönetimi, alışveriş ve konut) ayrı kategoriler halinde tanımlanmıştır."
+          },
+          {
+            "content": "Her test seçeneği için belirlenen emisyon faktörleri, IPCC raporları, DEFRA verileri ve güncel literatür çalışmaları gibi kaynaklardan alınmıştır."
+          },
+          {
+            "content": "Emisyon katsayıları kilogram (kg CO₂e/yıl) birimiyle hesaplanmakta, kullanıcıya sunulan toplam sonuçlar ton (ton CO₂e/yıl) cinsinden sadeleştirilmektedir."
+          },
+          {
+            "content": "Sürdürülebilir yaşam alışkanlıkları ve atık geri dönüşümü gibi olumlu çevresel etkiler, emisyonu azaltıcı faktörler olarak hesaplamalara dahil edilmiştir."
+          },
+          {
+            "content": "Tüm hesaplamalar, kullanıcıların yıllık bazda tüketim ve kullanım alışkanlıklarını temel alacak şekilde modellenmiştir."
+          }
+        ]
+      },
+      {
+        "subtitle": "Önemli Notlar",
+        "type": "list",
+        "content": "",
+        "items": [
+          {
+            "content": "Hesaplamalar, kullanıcıların beyan ettiği bilgilere ve genel tüketim eğilimlerine dayanmaktadır."
+          },
+          {
+            "content": "Gerçek karbon ayak izi, bireysel yaşam tarzı, bölgesel farklılıklar ve özel koşullara bağlı olarak değişebilir."
+          },
+          {
+            "content": "Karbonİzgi, hem bireysel hem de kurumsal kullanıcılar için çevresel etkilerini daha iyi anlamalarını ve sürdürülebilir yaşam biçimleri geliştirmelerini desteklemek amacıyla hazırlanmıştır."
+          }
+        ]
+      }
+    ]
+  }
+  

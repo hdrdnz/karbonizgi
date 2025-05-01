@@ -5,11 +5,11 @@ import (
 	"carbonfootprint/model"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +22,11 @@ type PersonInf struct {
 	UserId  int    `json:"userId"`
 	Score   string `json:"score"`
 	Message string `json:"message"`
+	Filter  string
+	Key     string
+}
+type Chat struct {
+	Message string `json:"message"`
 }
 
 type ChatResp struct {
@@ -33,7 +38,7 @@ type ChatResp struct {
 // @Tags         chat
 // @Accept       json
 // @Produce      json
-// @Param        PersonInf body PersonInf true "Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin."
+// @Param        PersonInf body PersonInf true "Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin. Filter kısmında main ya da detail ifadelerini göndermelisin. main için key kısmını girmene gerek yok ama detail kısmında key kısmına alt başlığın key bilgisini, score kısmına da alt başlıkta aldığı skoru göndermelisin."
 // @Success      200 {object} Response "Message kısmını kullanıcıya gösterebilirsin.Eğer kullanıcı karbonayak izi dışında sorular sorarsa chat cevap vermez karbon ayak izine yönlendirir.2 kere gereksiz soru sorulursa data kısmında 'false' döner ve burada chat konuşmasını bitir sonra message kısmını kullanıcıya gösterebilirsin."
 // @Failure      400 {object} Response "Invalid request"
 // @Router       /chat [post]
@@ -52,6 +57,16 @@ func PostChat(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "userId kısmı boş olamaz.",
+		})
+		return
+	}
+	fmt.Println("userıd:", Claims["userId"])
+	fmt.Println("girilken:", inf.UserId)
+
+	if inf.UserId != int(Claims["userId"].(float64)) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "geçersiz userId",
 		})
 		return
 	}
@@ -87,14 +102,30 @@ func PostChat(c *gin.Context) {
 	}
 	rdb, ctx := config.GetRedis()
 	userId := strconv.FormatInt(int64(user.Id), 10)
-	key := userId + ":messages"
+	var key string
+	if inf.Filter == "detail" {
+		key = userId + ":" + inf.Key
+	} else if inf.Filter == "main" {
+		key = userId + ":messages"
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Geçersiz key",
+		})
+		return
+	}
+	filter := inf.Filter
+
+	//önceki mesajların kontrolü
 	pastMsgs, err := rdb.LRange(ctx, key, 0, -1).Result()
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("len(pastMsgs):", len(pastMsgs), pastMsgs)
 	if len(pastMsgs) != 0 {
 		var messages []openai.ChatCompletionMessage
 		for _, msgJSON := range pastMsgs {
+			fmt.Println("----JSON", msgJSON)
 			if msgJSON != "" {
 				var cm openai.ChatCompletionMessage
 				if err := json.Unmarshal([]byte(msgJSON), &cm); err != nil {
@@ -112,9 +143,11 @@ func PostChat(c *gin.Context) {
 			panic(err)
 		}
 		messages = append(messages, message)
+
+		//mesajı kaydetme
 		rdb.RPush(ctx, key, msgByte)
 
-		response, control, err := chatWithCarbonExpert(client, messages, userId)
+		response, control, err := chatWithCarbonExpert(client, messages, user, filter)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
@@ -143,6 +176,7 @@ func PostChat(c *gin.Context) {
 		})
 		return
 	} else {
+		fmt.Println("ilk kısım")
 		if inf.Score == "" {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
@@ -150,13 +184,21 @@ func PostChat(c *gin.Context) {
 			})
 			return
 		}
-		firstMes := "Kullanıcı ismi:" + user.Firstname + "Karbon ayak izi değeri:" + inf.Score
+		var firstMes string
+		if filter == "detail" {
+			// [DETAY SKOR MODU] burak, key: house_type, skor: 330"
+			firstMes = "[DETAY SKOR MODU] " + user.Firstname + ", key:" + inf.Key + ",skor:" + inf.Score
+			// firstMes = inf.Key + ":" + inf.Score
+		} else {
+			firstMes = "Kullanıcı ismi:" + user.Firstname + "Karbon ayak izi değeri:" + inf.Score
+
+		}
 		messages := []openai.ChatCompletionMessage{
 			{Role: openai.ChatMessageRoleSystem,
 				Content: firstMes,
 			},
 		}
-		response, control, err := chatWithCarbonExpert(client, messages, userId)
+		response, control, err := chatWithCarbonExpert(client, messages, user, filter)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
@@ -193,50 +235,191 @@ func PostChat(c *gin.Context) {
 
 }
 
-func chatWithCarbonExpert(client *openai.Client, userMessages []openai.ChatCompletionMessage, userId string) (string, bool, error) {
+func chatWithCarbonExpert(client *openai.Client, userMessages []openai.ChatCompletionMessage, user *model.User, filter string) (string, bool, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	messages := []openai.ChatCompletionMessage{
-		{Role: openai.ChatMessageRoleSystem, Content: os.Getenv("SystemPrompt")},
+	moduleName := config.GetModulName()
+	var content string
+	if filter == "detail" {
+		if user.UserType == "person" {
+			content = "Kullanıcı bireysel bir kişi. Kullanıcı belirli bir konuda karbon etkisini değerlendirmeni istiyor."
+		} else {
+			content = "Kullanıcı bir şirket temsilcisi. Kullanıcı belirli bir konuda karbon etkisini değerlendirmeni istiyor."
+		}
+	} else {
+		if user.UserType == "person" {
+			content = "Kullanıcı bireysel bir kişi. Kullanıcının karbon ayak izi skoru ile ilgili genel bir yorum yap."
+		} else {
+			content = "Kullanıcı bir şirket temsilcisi. Kullanıcının karbon ayak izi skoru ile ilgili genel bir yorum yap."
+		}
 	}
-
+	prompt := []openai.ChatCompletionMessage{
+		{Role: openai.ChatMessageRoleSystem, Content: os.Getenv("chatControl")},
+	}
+	messages := append(prompt, openai.ChatCompletionMessage{
+		Role:    openai.ChatMessageRoleSystem,
+		Content: content,
+	})
 	// Kullanıcı mesajları (önceki mesajlar dahil)
 	messages = append(messages, userMessages...)
+	fmt.Println("messages:", messages)
 
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
-			Model:    openai.GPT3Dot5Turbo,
+			Model:    moduleName,
 			Messages: messages,
 		},
 	)
 	if err != nil {
 		return "", true, err
 	}
-	if strings.Contains(resp.Choices[0].Message.Content, os.Getenv("ControlPrompt")) {
-		cont := controlMessage(userId)
-		if !cont {
-			return os.Getenv("EndPrompt"), false, nil
-		}
-	}
+	// if strings.Contains(resp.Choices[0].Message.Content, os.Getenv("ControlPrompt")) {
+	// 	cont := controlMessage(strconv.FormatInt(int64(user.Id), 10))
+	// 	if !cont {
+	// 		return os.Getenv("EndPrompt"), false, nil
+	// 	}
+	// }
 	return resp.Choices[0].Message.Content, true, nil
 }
 
-func controlMessage(userId string) bool {
+// func controlMessage(userId string) bool {
+// 	rdb, ctx := config.GetRedis()
+// 	resp, _ := rdb.Get(ctx, userId+"-control").Result()
+// 	if resp != "" {
+// 		if resp == "2" {
+// 			return false
+// 		} else {
+// 			rdb.Set(ctx, userId+"-control", 2, 5*time.Minute)
+// 		}
+
+// 	} else {
+// 		rdb.Set(ctx, userId+"-control", 1, 5*time.Minute)
+// 	}
+// 	return true
+
+// }
+
+func GeneralChat(c *gin.Context) {
+	fmt.Println("deneme:", os.Getenv("chatControl"))
+	db := model.GetDB()
+	client := config.GetClient()
+	chat := Chat{}
+	if err := c.ShouldBindJSON(&chat); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Bir hata oluştu",
+		})
+		return
+	}
+	if chat.Message == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Geçersiz mesaj.",
+		})
+		return
+	}
+	user := model.User{}
+	if err := db.Where("id=?", Claims["userId"]).First(&user).Error; err != nil && err != gorm.ErrRecordNotFound {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Bir hata oluştu",
+		})
+		return
+	}
+	if user.Id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Kullanıcı bulunamadı.",
+		})
+		return
+	}
+
 	rdb, ctx := config.GetRedis()
-	resp, _ := rdb.Get(ctx, userId+"-control").Result()
-	if resp != "" {
-		if resp == "2" {
-			return false
-		} else {
-			rdb.Set(ctx, userId+"-control", 2, 5*time.Minute)
+	key := strconv.FormatInt(int64(user.Id), 10) + ":chat"
+	pastMsgs, err := rdb.LRange(ctx, key, 0, -1).Result()
+	if err != nil {
+		panic(err)
+	}
+
+	var content string
+	if user.UserType == "company" {
+		content = "Kullanıcı bir şirket. Kullanıcı karbon ayak izi ile ilgili sorular soruyor."
+	} else {
+		content = "Kullanıcı bireysel bir kişi. Kullanıcı karbon ayak izi ile ilgili sorular soruyor."
+
+	}
+	// content += os.Getenv("chatControl")
+	// chatMessages := []openai.ChatCompletionMessage{
+	// 	{Role: openai.ChatMessageRoleSystem, Content: os.Getenv("chatControl")},
+	// }
+	chatMessages := []openai.ChatCompletionMessage{
+		{Role: openai.ChatMessageRoleSystem, Content: content},
+	}
+	// chatMessages := append(chatMessages, openai.ChatCompletionMessage{
+	// 	Role:    openai.ChatMessageRoleSystem,
+	// 	Content: content,
+	// })
+	// chatMessages := []openai.ChatCompletionMessage{
+	// 	{Role: openai.ChatMessageRoleSystem, Content: content},
+	// }
+	moduleName := config.GetModulName()
+	userMessage := openai.ChatCompletionMessage{
+		Role:    openai.ChatMessageRoleUser,
+		Content: "[GENEL CHAT MODU] " + chat.Message,
+		//Content: chat.Message,
+	}
+	if len(pastMsgs) != 0 {
+		var messages []openai.ChatCompletionMessage
+		for _, msgJSON := range pastMsgs {
+			fmt.Println("----JSON", msgJSON)
+			if msgJSON != "" {
+				var cm openai.ChatCompletionMessage
+				if err := json.Unmarshal([]byte(msgJSON), &cm); err != nil {
+					panic(err)
+				}
+				messages = append(messages, cm)
+			}
 		}
 
-	} else {
-		rdb.Set(ctx, userId+"-control", 1, 5*time.Minute)
+		// Kullanıcı mesajları (önceki mesajlar dahil)
+		chatMessages = append(chatMessages, messages...)
+		fmt.Println("messages:", chatMessages)
 	}
-	return true
-
+	chatMessages = append(chatMessages, userMessage)
+	fmt.Println("chatMessages:", chatMessages)
+	response, err := client.CreateChatCompletion(
+		context.Background(),
+		openai.ChatCompletionRequest{
+			Model:    moduleName,
+			Messages: chatMessages,
+		},
+	)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "error",
+			"message": "Bir hata oluştu",
+		})
+		return
+	}
+	respChat := response.Choices[0].Message.Content
+	allMessages := []string{chat.Message, respChat}
+	for _, msg := range allMessages {
+		message := openai.ChatCompletionMessage{
+			Role:    openai.ChatMessageRoleUser,
+			Content: msg,
+		}
+		msgByte, err := json.Marshal(message)
+		if err != nil {
+			panic(err)
+		}
+		rdb.RPush(ctx, key, msgByte)
+	}
+	rdb.Expire(ctx, key, 5*time.Minute)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "success",
+		"message": respChat,
+	})
 }

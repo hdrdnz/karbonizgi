@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
 	"github.com/sashabaranov/go-openai"
 )
@@ -35,7 +36,8 @@ type Custom struct {
 	Header string `json:"header"`
 }
 type OpenAI struct {
-	Key string `json:"key"`
+	ModelName string `json:"modelName"`
+	Key       string `json:"key"`
 }
 type Config struct {
 	Database  Database  `json:"database"`
@@ -89,6 +91,17 @@ func LoadClient() {
 	client = openai.NewClient(config.OpenAI.Key)
 }
 
+func GetModulName() string {
+	return config.OpenAI.ModelName
+}
+
 func GetClient() *openai.Client {
 	return client
+}
+
+func GetEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }

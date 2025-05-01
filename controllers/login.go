@@ -258,7 +258,7 @@ func Login(c *gin.Context) {
 
 	//kullanıcı token kayıt kontrolü
 	userToken := &model.UserToken{}
-	if err := db.Where("id=?", user.Id).Last(&userToken).Error; err != nil && err != gorm.ErrRecordNotFound {
+	if err := db.Where("user_id=?", user.Id).Last(&userToken).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu.",

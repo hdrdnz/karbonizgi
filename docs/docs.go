@@ -15,6 +15,68 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/add-suggest": {
+            "post": {
+                "description": "Aksiyon Ekleme Kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Action"
+                ],
+                "summary": "Kullanıcı aksiyon ekleme",
+                "parameters": [
+                    {
+                        "description": "status değeri için sadece 'planned,in_progress,completed,cancelled' değerlerden biri gönderilmelidir. ",
+                        "name": "Suggest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Suggest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cal-info": {
+            "get": {
+                "description": "Hesaplama yöntemi bilgilendirme kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Data"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hesaplama için bilgiler yer alır.Sections kısmında yazı yer alır. type 'paragraph' ise content içerisinde yazı bulunur. Eğer type 'list' ise items içerisinde content olarak yazılar yer alır.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.CallDataResp"
+                        }
+                    }
+                }
+            }
+        },
         "/chat": {
             "post": {
                 "description": "Chat Kısmı",
@@ -30,7 +92,7 @@ const docTemplate = `{
                 "summary": "User chat Kısmı",
                 "parameters": [
                     {
-                        "description": "Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin.",
+                        "description": "Kullanıcının user id bilgisini ve ilk başta score bilgisini girmelisin.Score bilgisi /score endpointinde data kısmında dönüyor.Eğer kullanıcı konuşmayı devam ettirirse message kısmında kullanıcının mesajını gönderebilirsin. Filter kısmında main ya da detail ifadelerini göndermelisin. main için key kısmını girmene gerek yok ama detail kısmında key kısmına alt başlığın key bilgisini, score kısmına da alt başlıkta aldığı skoru göndermelisin.",
                         "name": "PersonInf",
                         "in": "body",
                         "required": true,
@@ -55,7 +117,41 @@ const docTemplate = `{
                 }
             }
         },
-        "/company_questions": {
+        "/comments": {
+            "get": {
+                "description": "Kullanıcı soru-cevap kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Data"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "person ya da company ifadesi girilir.",
+                        "name": "user_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kullanıcı eleştiri soru cevap kısımları bulunur.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controllers.Comment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/company-questions": {
             "get": {
                 "description": "Şirket test kısmı",
                 "consumes": [
@@ -72,6 +168,50 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/controllers.QuesInf"
+                        }
+                    }
+                }
+            }
+        },
+        "/data": {
+            "get": {
+                "description": "Genel bilgilendirme kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Data"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Anasayfa için güncel bilgiler yer alır. Rastgele üç veri bulunur.Sections kısmında yazılar yer alır. type 'paragraph' ise content içerisinde yazı bulunur. Eğer type 'list' ise items içerisinde title ve content olarak yazılar yer alır.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DataResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/detail-score": {
+            "get": {
+                "description": "Detay skor bilgileri",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Score"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kullanıcıya ait soru alt başlıklarına göre questiontype:temel soru başlığını ,QuestionSubType : alt soru başlığını ve SubScore ise alt başlığa ait değeri içerir.Bu kısımlar chat kısmı için kullanılır.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DetailResp"
                         }
                     }
                 }
@@ -145,7 +285,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/person_questions": {
+        "/person-questions": {
             "get": {
                 "description": "Bireysel test kısmı",
                 "consumes": [
@@ -222,7 +362,7 @@ const docTemplate = `{
                 "summary": "User Puan Kısmı",
                 "parameters": [
                     {
-                        "description": "/company-questions ve /person-questions endpointlerinde belli bir key value değerine göre soruları döndüm. Bu değerleri kullanarak question_name ve question_key değerlerini ekleyebilirsin.",
+                        "description": "/company-questions ve /person-questions endpointlerinde belli bir key value değerleri bulunamktadır. Bu değerleri kullanarak question_name ve question_key değerleri eklenir.",
                         "name": "ScoreInfo",
                         "in": "body",
                         "required": true,
@@ -246,9 +386,258 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/score-info": {
+            "get": {
+                "description": "Kullanıcı skor bilgileri",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Score"
+                ],
+                "summary": "Kullanıcı skor bilgileri",
+                "responses": {
+                    "200": {
+                        "description": "Kullanıcıya ait skor puanını ve skor tarihini geri döndürür.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DataScore"
+                        }
+                    }
+                }
+            }
+        },
+        "/suggested": {
+            "get": {
+                "description": "Örnek aksiyonlar",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Data"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "person ya da company ifadesi girilir.",
+                        "name": "user_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kullanıcıya aksiyon önerileri için kullanılır.s",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SuggestResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "Kullanıcı bilgileri kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-suggest": {
+            "get": {
+                "description": "Kullanıcı Aksiyon Kayıtları",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Action"
+                ],
+                "summary": "Kullanıcı aksiyon",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserSug"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "controllers.AllScores": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "type": "number"
+                },
+                "score_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.CalData": {
+            "type": "object",
+            "properties": {
+                "sections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.CalSection"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.CalItem": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.CalSection": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.CalItem"
+                    }
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.CallDataResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controllers.CalData"
+                }
+            }
+        },
+        "controllers.Comment": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "string"
+                },
+                "question": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.Data": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "sections": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Section"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.DataResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Data"
+                    }
+                }
+            }
+        },
+        "controllers.DataScore": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.AllScores"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.DetailResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.DetailScore"
+                    }
+                }
+            }
+        },
+        "controllers.DetailScore": {
+            "type": "object",
+            "properties": {
+                "questionSubType": {
+                    "type": "string"
+                },
+                "questionType": {
+                    "type": "string"
+                },
+                "subScore": {
+                    "type": "number"
+                }
+            }
+        },
+        "controllers.Item": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Options": {
             "type": "object",
             "properties": {
@@ -263,6 +652,12 @@ const docTemplate = `{
         "controllers.PersonInf": {
             "type": "object",
             "properties": {
+                "filter": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -292,7 +687,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "score": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "sub_key": {
                     "type": "string"
@@ -323,6 +718,92 @@ const docTemplate = `{
                     }
                 },
                 "question_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.Section": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Item"
+                    }
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "-paragraph ve list olarak ayrılır. list ise item kısmı paragraph ise content kısmı doldurulur.",
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.Suggest": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SuggestIds": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "action_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.SuggestResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.UserInfo": {
+            "type": "object",
+            "properties": {
+                "companyName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "userType": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
@@ -360,6 +841,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.UserSug": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.SuggestIds"
+                    }
+                },
+                "status": {
                     "type": "string"
                 }
             }

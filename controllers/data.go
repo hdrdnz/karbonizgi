@@ -60,7 +60,7 @@ func GetInfo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
-		"data":   infos[:3],
+		"data":   infos[:4],
 	})
 
 }
@@ -247,6 +247,59 @@ func GetCalInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data":   infos,
+	})
+
+}
+
+type KeyResponse struct {
+	Status string            `json:"status"`
+	Data   map[string]string `json:"data"`
+}
+
+// @Description  Soru başlıkları
+// @Tags         Data
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} KeyResponse "Başlıkların ingilizce ve türkçe karşılıkları bulunmaktadır."
+// @Router       /key-translation [get]
+func KeyTranslation(c *gin.Context) {
+	var KeyTranslations = map[string]string{
+		"heating_method":                  "Isınma Yöntemi",
+		"daily_electricity_usage":         "Elektrik Kullanımı",
+		"vehicle_type":                    "Araç Türü",
+		"daily_distance":                  "Günlük Araç Kullanımı",
+		"public_transport_usage":          "Toplu Taşıma Kullanımı",
+		"annual_flights":                  "Yıllık Uçuş Sayısı",
+		"meat_consumption":                "Et Tüketimi",
+		"dairy_consumption":               "Süt Ürünleri Tüketimi",
+		"weekly_waste":                    "Haftalık Atık Miktarı",
+		"recycling_habits":                "Geri Dönüşüm Alışkanlığı",
+		"clothing_purchases":              "Kıyafet Alışverişi",
+		"electronics_purchases":           "Elektronik Alışverişi",
+		"house_type":                      "Konut Türü",
+		"household_size":                  "Evdeki Kişi Sayısı",
+		"energy_source":                   "Enerji Kaynağı",
+		"production_efficiency":           "Üretim Verimliliği",
+		"machine_efficiency":              "Makine Verimliliği",
+		"employee_commute":                "Çalışan Ulaşımı",
+		"fuel_type":                       "Araç Yakıt Türü",
+		"renewable_investments":           "Yenilenebilir Enerji Yatırımı",
+		"charging_stations":               "Şarj İstasyonu Yatırımı",
+		"energy_efficiency_measures":      "Enerji Verimliliği Önlemleri",
+		"energy_efficiency_in_facilities": "Tesis Enerji Verimliliği",
+		"waste_management":                "Atık Yönetimi",
+		"digital_transformation":          "Dijital Dönüşüm",
+		"packaging_policy":                "Ambalaj Politikası",
+		"renewable_energy_use":            "Yenilenebilir Enerji Kullanımı",
+		"customer_engagement":             "Müşteri Bilgilendirme",
+		"waste_recycling_rate":            "Atık Geri Dönüşüm Oranı",
+		"waste_separation_facility":       "Atık Ayrıştırma Kapasitesi",
+		"recycling_initiatives":           "Geri Dönüşüm Girişimleri",
+		"renewable_energy_projects":       "Yenilenebilir Enerji Projeleri",
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+		"data":   KeyTranslations,
 	})
 
 }

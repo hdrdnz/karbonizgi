@@ -195,6 +195,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/delete-suggest": {
+            "post": {
+                "description": "Aksiyon Silme Kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Action"
+                ],
+                "summary": "Kullanıcı aksiyon silme",
+                "parameters": [
+                    {
+                        "description": "action id gönderilmesi yeterlidir.",
+                        "name": "Suggest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.DelSuggest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/detail-score": {
             "get": {
                 "description": "Detay skor bilgileri",
@@ -207,11 +247,82 @@ const docTemplate = `{
                 "tags": [
                     "Score"
                 ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "skor id değeri girilir.",
+                        "name": "score_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Kullanıcıya ait soru alt başlıklarına göre questiontype:temel soru başlığını ,QuestionSubType : alt soru başlığını ve SubScore ise alt başlığa ait değeri içerir.Bu kısımlar chat kısmı için kullanılır.",
                         "schema": {
                             "$ref": "#/definitions/controllers.DetailResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/general-chat": {
+            "post": {
+                "description": "Chat Kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chat"
+                ],
+                "summary": "User genel chat Kısmı",
+                "parameters": [
+                    {
+                        "description": "kullanıcı mesajını girmelisin.",
+                        "name": "GeneralReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.GeneralReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message içerisinde yanıt döner",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/key-translation": {
+            "get": {
+                "description": "Soru başlıkları",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Data"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Başlıkların ingilizce ve türkçe karşılıkları bulunmaktadır.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.KeyResponse"
                         }
                     }
                 }
@@ -375,7 +486,7 @@ const docTemplate = `{
                     "200": {
                         "description": "data kısmında kullanıcının karbon ayak izi değeri döner.Chat kısmında bu kısmı kullanacaksın.",
                         "schema": {
-                            "$ref": "#/definitions/controllers.Response"
+                            "$ref": "#/definitions/controllers.ResponseScore"
                         }
                     },
                     "400": {
@@ -410,6 +521,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/score-rank": {
+            "get": {
+                "description": "Score Ranking",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Score"
+                ],
+                "summary": "Kullanıcı skor sıralaması",
+                "responses": {
+                    "200": {
+                        "description": "total_score_number toplam skor tablosundaki sayıyı gösterir. score_number kullanıcının sıralamasını score_ranking ise ilk 4 sıralamayı gösterir. rank sıralamadır.",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.RankResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/suggested": {
             "get": {
                 "description": "Örnek aksiyonlar",
@@ -436,6 +576,46 @@ const docTemplate = `{
                         "description": "Kullanıcıya aksiyon önerileri için kullanılır.s",
                         "schema": {
                             "$ref": "#/definitions/controllers.SuggestResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/update-suggest": {
+            "post": {
+                "description": "Aksiyon Güncelleme Kısmı",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Action"
+                ],
+                "summary": "Kullanıcı aksiyon güncelleme",
+                "parameters": [
+                    {
+                        "description": "status değeri için sadece 'planned,in_progress,completed,cancelled' değerlerden biri gönderilmelidir. ",
+                        "name": "Suggest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UptSuggest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Response"
                         }
                     }
                 }
@@ -491,11 +671,14 @@ const docTemplate = `{
         "controllers.AllScores": {
             "type": "object",
             "properties": {
-                "score": {
-                    "type": "number"
+                "last-score": {
+                    "$ref": "#/definitions/controllers.Scores"
                 },
-                "score_date": {
-                    "type": "string"
+                "scores": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Scores"
+                    }
                 }
             }
         },
@@ -602,6 +785,14 @@ const docTemplate = `{
                 }
             }
         },
+        "controllers.DelSuggest": {
+            "type": "object",
+            "properties": {
+                "action_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "controllers.DetailResp": {
             "type": "object",
             "properties": {
@@ -619,11 +810,22 @@ const docTemplate = `{
                 "questionSubType": {
                     "type": "string"
                 },
+                "questionSub_Id": {
+                    "type": "integer"
+                },
                 "questionType": {
                     "type": "string"
                 },
                 "subScore": {
                     "type": "number"
+                }
+            }
+        },
+        "controllers.GeneralReq": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
                 }
             }
         },
@@ -634,6 +836,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.KeyResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "status": {
                     "type": "string"
                 }
             }
@@ -694,11 +910,42 @@ const docTemplate = `{
                 }
             }
         },
+        "controllers.RankResp": {
+            "type": "object",
+            "properties": {
+                "score_number": {
+                    "type": "integer"
+                },
+                "score_ranking": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.UserRank"
+                    }
+                },
+                "total_score_number": {
+                    "type": "integer"
+                }
+            }
+        },
         "controllers.Response": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.ResponseScore": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/controllers.ScoreResp"
                 },
                 "message": {
                     "type": "string"
@@ -719,6 +966,31 @@ const docTemplate = `{
                 },
                 "question_name": {
                     "type": "string"
+                }
+            }
+        },
+        "controllers.ScoreResp": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "type": "string"
+                },
+                "score_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.Scores": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "type": "number"
+                },
+                "score_date": {
+                    "type": "string"
+                },
+                "score_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -782,6 +1054,20 @@ const docTemplate = `{
                 }
             }
         },
+        "controllers.UptSuggest": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "action_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.UserInfo": {
             "type": "object",
             "properties": {
@@ -816,6 +1102,20 @@ const docTemplate = `{
                 },
                 "user_name": {
                     "type": "string"
+                }
+            }
+        },
+        "controllers.UserRank": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "number"
                 }
             }
         },
@@ -865,7 +1165,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
-	Host:             "https://karbonizgi.leaflove.com.tr",
+	Host:             "https://api.karbonizgi.tr",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "KARBONİZGİ",

@@ -1,10 +1,12 @@
 definitions:
   controllers.AllScores:
     properties:
-      score:
-        type: number
-      score_date:
-        type: string
+      last-score:
+        $ref: '#/definitions/controllers.Scores'
+      scores:
+        items:
+          $ref: '#/definitions/controllers.Scores'
+        type: array
     type: object
   controllers.CalData:
     properties:
@@ -72,6 +74,11 @@ definitions:
       status:
         type: string
     type: object
+  controllers.DelSuggest:
+    properties:
+      action_id:
+        type: integer
+    type: object
   controllers.DetailResp:
     properties:
       data:
@@ -81,6 +88,8 @@ definitions:
     type: object
   controllers.DetailScore:
     properties:
+      questionSub_Id:
+        type: integer
       questionSubType:
         type: string
       questionType:
@@ -88,11 +97,25 @@ definitions:
       subScore:
         type: number
     type: object
+  controllers.GeneralReq:
+    properties:
+      message:
+        type: string
+    type: object
   controllers.Item:
     properties:
       content:
         type: string
       title:
+        type: string
+    type: object
+  controllers.KeyResponse:
+    properties:
+      data:
+        additionalProperties:
+          type: string
+        type: object
+      status:
         type: string
     type: object
   controllers.Options:
@@ -131,10 +154,30 @@ definitions:
       sub_key:
         type: string
     type: object
+  controllers.RankResp:
+    properties:
+      score_number:
+        type: integer
+      score_ranking:
+        items:
+          $ref: '#/definitions/controllers.UserRank'
+        type: array
+      total_score_number:
+        type: integer
+    type: object
   controllers.Response:
     properties:
       data:
         type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.ResponseScore:
+    properties:
+      data:
+        $ref: '#/definitions/controllers.ScoreResp'
       message:
         type: string
       status:
@@ -148,6 +191,22 @@ definitions:
         type: array
       question_name:
         type: string
+    type: object
+  controllers.ScoreResp:
+    properties:
+      score:
+        type: string
+      score_id:
+        type: integer
+    type: object
+  controllers.Scores:
+    properties:
+      score:
+        type: number
+      score_date:
+        type: string
+      score_id:
+        type: integer
     type: object
   controllers.Section:
     properties:
@@ -189,6 +248,15 @@ definitions:
       status:
         type: string
     type: object
+  controllers.UptSuggest:
+    properties:
+      action:
+        type: string
+      action_id:
+        type: integer
+      status:
+        type: string
+    type: object
   controllers.UserInfo:
     properties:
       companyName:
@@ -212,6 +280,15 @@ definitions:
         type: string
       user_name:
         type: string
+    type: object
+  controllers.UserRank:
+    properties:
+      name:
+        type: string
+      rank:
+        type: integer
+      score:
+        type: number
     type: object
   controllers.UserRegister:
     properties:
@@ -239,7 +316,7 @@ definitions:
       status:
         type: string
     type: object
-host: https://karbonizgi.leaflove.com.tr
+host: https://api.karbonizgi.tr
 info:
   contact: {}
   title: KARBONİZGİ
@@ -374,11 +451,43 @@ paths:
             $ref: '#/definitions/controllers.DataResp'
       tags:
       - Data
+  /delete-suggest:
+    post:
+      consumes:
+      - application/json
+      description: Aksiyon Silme Kısmı
+      parameters:
+      - description: action id gönderilmesi yeterlidir.
+        in: body
+        name: Suggest
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.DelSuggest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Kullanıcı aksiyon silme
+      tags:
+      - Action
   /detail-score:
     get:
       consumes:
       - application/json
       description: Detay skor bilgileri
+      parameters:
+      - description: skor id değeri girilir.
+        in: query
+        name: score_id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -390,6 +499,46 @@ paths:
             $ref: '#/definitions/controllers.DetailResp'
       tags:
       - Score
+  /general-chat:
+    post:
+      consumes:
+      - application/json
+      description: Chat Kısmı
+      parameters:
+      - description: kullanıcı mesajını girmelisin.
+        in: body
+        name: GeneralReq
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.GeneralReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message içerisinde yanıt döner
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: User genel chat Kısmı
+      tags:
+      - chat
+  /key-translation:
+    get:
+      consumes:
+      - application/json
+      description: Soru başlıkları
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Başlıkların ingilizce ve türkçe karşılıkları bulunmaktadır.
+          schema:
+            $ref: '#/definitions/controllers.KeyResponse'
+      tags:
+      - Data
   /login:
     post:
       consumes:
@@ -495,7 +644,7 @@ paths:
           description: data kısmında kullanıcının karbon ayak izi değeri döner.Chat
             kısmında bu kısmı kullanacaksın.
           schema:
-            $ref: '#/definitions/controllers.Response'
+            $ref: '#/definitions/controllers.ResponseScore'
         "400":
           description: Invalid request
           schema:
@@ -518,6 +667,27 @@ paths:
       summary: Kullanıcı skor bilgileri
       tags:
       - Score
+  /score-rank:
+    get:
+      consumes:
+      - application/json
+      description: Score Ranking
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: total_score_number toplam skor tablosundaki sayıyı gösterir.
+            score_number kullanıcının sıralamasını score_ranking ise ilk 4 sıralamayı
+            gösterir. rank sıralamadır.
+          schema:
+            $ref: '#/definitions/controllers.RankResp'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Kullanıcı skor sıralaması
+      tags:
+      - Score
   /suggested:
     get:
       consumes:
@@ -538,6 +708,33 @@ paths:
             $ref: '#/definitions/controllers.SuggestResp'
       tags:
       - Data
+  /update-suggest:
+    post:
+      consumes:
+      - application/json
+      description: Aksiyon Güncelleme Kısmı
+      parameters:
+      - description: 'status değeri için sadece ''planned,in_progress,completed,cancelled''
+          değerlerden biri gönderilmelidir. '
+        in: body
+        name: Suggest
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UptSuggest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Kullanıcı aksiyon güncelleme
+      tags:
+      - Action
   /user:
     get:
       consumes:

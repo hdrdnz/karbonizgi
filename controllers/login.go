@@ -4,8 +4,8 @@ import (
 	"carbonfootprint/model"
 	"net/http"
 	"net/mail"
-	"regexp"
 	"time"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -141,20 +141,10 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-
-	if len(register.Password) < 6 {
+	if !ContainsUpper(register.Password) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
-			"message": "Şifre en az 6 karakter olmalıdır.",
-		})
-		return
-	}
-
-	upperCase := regexp.MustCompile(`[A-Z]`)
-	if !upperCase.MatchString(register.Password) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":  "error",
-			"message": "şifre en az bir büyük harf içermelidir",
+			"message": "Şifre en az bir büyük harf içermelidir.",
 		})
 		return
 	}
@@ -235,7 +225,7 @@ func Login(c *gin.Context) {
 	if !CheckPasswordHash(login.Password, user.Password) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
-			"message": "Hatalı kullanıcı adı ya da şifre1",
+			"message": "Hatalı kullanıcı adı ya da şifre",
 		})
 		return
 	}
@@ -324,4 +314,12 @@ func Logout(c *gin.Context) {
 		"status":  "success",
 		"message": "Başarılı çıkış",
 	})
+}
+func ContainsUpper(s string) bool {
+	for _, r := range s {
+		if unicode.IsUpper(r) {
+			return true
+		}
+	}
+	return false
 }

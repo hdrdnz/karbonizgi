@@ -17,13 +17,12 @@ var secretKey = []byte("./secret.key")
 
 func RequireAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("secretKey:", secretKey)
 		db := model.GetDB()
 		custom := c.GetHeader("X-Custom-Token")
 		config := config.GetConfig()
-		fmt.Println("onfig.Custom.Header:", config.Custom.Header)
+		fmt.Println("onfig.Custom.Header:", config.Custom.User)
 
-		if custom == "" || custom != config.Custom.Header {
+		if custom == "" || custom != config.Custom.User {
 			c.AbortWithStatusJSON(http.StatusBadRequest, nil)
 			return
 		}

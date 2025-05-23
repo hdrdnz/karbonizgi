@@ -33,7 +33,8 @@ type Server struct {
 	Host string `json:"remoteHost"`
 }
 type Custom struct {
-	Header string `json:"header"`
+	User  string `json:"user"`
+	Admin string `json:"admin"`
 }
 type OpenAI struct {
 	ModelName string `json:"modelName"`

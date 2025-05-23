@@ -14,7 +14,7 @@ import (
 )
 
 // @title KARBONİZGİ
-// @host https://karbonizgi.leaflove.com.tr
+// @host https://api.karbonizgi.tr
 func main() {
 	_, err := config.LoadConfig("./config/config.json")
 	if err != nil {
@@ -27,9 +27,9 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     strings.Split(os.Getenv("ALLOWED_ORIGINS"), ","), // React dev server
+		AllowOrigins:     strings.Split(os.Getenv("ALLOWED_ORIGINS"), ","),
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "X-Admin-Token"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,

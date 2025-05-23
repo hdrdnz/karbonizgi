@@ -22,10 +22,12 @@ type QuestionSubhead struct {
 type UserDetailScore struct {
 	Id              int     `gorm:"primaryKey;autoIncrement"`
 	UserId          int     `gorm:"not null;index"`
+	UserScoreId     int     `gorm:"not null;index"`
 	QuestionTypesId int     `gorm:"not null;index"`
 	TotalScore      float64 `gorm:"not null;index"`
 	QuestionTypes   QuestionTypes
 	User            User
+	UserScore       UserScore
 	CreatedAt       time.Time `gorm:"autoCreateTime"`
 	UpdatedAt       time.Time `gorm:"autoUpdateTime"`
 }

@@ -5,7 +5,6 @@ import (
 	"carbonfootprint/model"
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -146,7 +145,6 @@ func chatWithCarbonExpert(client *openai.Client, userMessages []openai.ChatCompl
 		{Role: openai.ChatMessageRoleSystem, Content: systemMsg},
 	}
 	messages = append(messages, userMessages...)
-	fmt.Println("messages:", messages)
 
 	resp, err := client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
 		Model:    config.GetModulName(),
@@ -215,8 +213,6 @@ func GeneralChat(c *gin.Context) {
 		Content: chat.Message,
 	}
 	chatMessages = append(chatMessages, userMessage)
-
-	fmt.Println("genel mesaj:", chatMessages)
 	response, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -225,7 +221,6 @@ func GeneralChat(c *gin.Context) {
 		},
 	)
 	if err != nil {
-		fmt.Println("err:", err)
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "message": "Bir hata oluştu"})
 		return
 	}

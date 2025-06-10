@@ -3,7 +3,6 @@ package controller
 import (
 	"carbonfootprint/controllers"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"math/rand/v2"
@@ -30,7 +29,6 @@ type OptionKeys struct {
 }
 
 func GetQuestions(c *gin.Context) {
-	fmt.Println("girdi")
 	questionType := c.Query("type")
 	var fileName string
 	if questionType == "" {
@@ -40,7 +38,6 @@ func GetQuestions(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("questionType:", questionType)
 	if questionType == "person" {
 		fileName = "./data/person.json"
 
@@ -64,7 +61,6 @@ func GetQuestions(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bu kısıma girdi.")
 	ques := make(map[string]interface{})
 	if err := json.Unmarshal(byteFile, &ques); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -177,11 +173,9 @@ func DeleteQuestion(c *gin.Context) {
 func AddQuestion(c *gin.Context) {
 	questionType := c.Param("type")
 	key := c.Param("category")
-	fmt.Println("key:", key)
 
 	var datas Question
 	if err := c.ShouldBindJSON(&datas); err != nil {
-		fmt.Println("err:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu.",
@@ -292,7 +286,6 @@ func GetArticle(c *gin.Context) {
 func DeleteArticle(c *gin.Context) {
 	var infos []controllers.Data
 	title := c.PostForm("title")
-	fmt.Println("title:", title)
 	file, err := os.ReadFile("./data/data.json")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -458,7 +451,6 @@ type Comment struct {
 }
 
 func AddComment(c *gin.Context) {
-	fmt.Println("girdi.")
 	commentReq := CommentReq{}
 	if err := c.ShouldBindJSON(&commentReq); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -467,7 +459,6 @@ func AddComment(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("commentReq:", commentReq)
 	if commentReq.Comment.Answer == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -489,10 +480,8 @@ func AddComment(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("commentReq.UserType:", commentReq.UserType)
 	var fileName string
 	if commentReq.UserType == "person" {
-		fmt.Println("person kısmına girdi.")
 		fileName = "./data/person-question.json"
 	} else {
 		fileName = "./data/company-question.json"
@@ -513,7 +502,6 @@ func AddComment(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bu ksııam girdis")
 	comments = append(comments, commentReq.Comment)
 	updatedData, err := json.MarshalIndent(comments, "", "  ")
 	if err != nil {
@@ -531,8 +519,6 @@ func AddComment(c *gin.Context) {
 func DeleteComment(c *gin.Context) {
 	data := c.PostForm("question_type")
 	question := c.PostForm("question")
-	fmt.Println("data:", data)
-	fmt.Println("question:", question)
 	var file *os.File
 	var fileName string
 	var err error

@@ -27,7 +27,6 @@ func PostComp(c *gin.Context) {
 			fmt.Println("hata:", cat)
 		}
 	}
-	fmt.Println("kayıt başarılı")
 }
 
 func PostSubComp(c *gin.Context) {
@@ -41,7 +40,6 @@ func PostSubComp(c *gin.Context) {
 			fmt.Println("hata:", cat)
 		}
 	}
-	fmt.Println("kayıt başarılı")
 }
 
 // @Description  Şirket test kısmı

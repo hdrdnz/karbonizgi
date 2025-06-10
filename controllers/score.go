@@ -3,7 +3,6 @@ package controllers
 import (
 	"carbonfootprint/model"
 	"errors"
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -43,7 +42,6 @@ type ResponseScore struct {
 // @Failure      400 {object} Response "Invalid request"
 // @Router       /score [post]
 func Score(c *gin.Context) {
-	fmt.Println("girdiii")
 	db := model.GetDB()
 	var scoreInf []ScoreInfo
 	if err := c.ShouldBindJSON(&scoreInf); err != nil {
@@ -105,7 +103,6 @@ func Score(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("başarıyla eklendi")
 	for _, info := range scoreInf {
 		detailScore := &model.UserDetailScore{}
 		detailScore.UserId = int(userId)
@@ -262,7 +259,6 @@ func GetSubDetailScore(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("userIDS:", userIds)
 
 	subScores := []model.SubScore{}
 	if err := db.Where("user_detail_score_id IN (?)", userIds).Preload("QuestionSubhead").Preload("UserDetailScore").Preload("QuestionSubhead.QuestionTypes").Find(&subScores).Error; err != nil && err != gorm.ErrRecordNotFound {

@@ -20,7 +20,6 @@ func RequireAuth() gin.HandlerFunc {
 		db := model.GetDB()
 		custom := c.GetHeader("X-Custom-Token")
 		config := config.GetConfig()
-		fmt.Println("onfig.Custom.Header:", config.Custom.User)
 
 		if custom == "" || custom != config.Custom.User {
 			c.AbortWithStatusJSON(http.StatusBadRequest, nil)

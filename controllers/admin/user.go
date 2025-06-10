@@ -4,7 +4,6 @@ import (
 	"carbonfootprint/controllers"
 	"carbonfootprint/model"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/mail"
@@ -15,10 +14,8 @@ import (
 )
 
 func GetUser(c *gin.Context) {
-	fmt.Println("users kısmına girdi.")
 	db := model.GetDB()
 	userType := c.Query("user_type")
-	fmt.Println("userType:", userType)
 	if userType != "person" && userType != "company" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -57,7 +54,6 @@ func UpdateUser(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("updateUser:", updateUser.UserId)
 	user := model.User{}
 	if err := db.Where("id=?", updateUser.UserId).First(&user).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -134,7 +130,6 @@ func AddUser(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("register:", register)
 	user := &model.User{}
 	_, err := mail.ParseAddress(register.Email)
 	if err != nil {
@@ -257,7 +252,6 @@ func DeleteUser(c *gin.Context) {
 	db := model.GetDB()
 	user := model.User{}
 	userId := c.PostForm("userId")
-	fmt.Println("userId:", userId)
 	if err := db.Where("id=?", userId).First(&user).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -338,8 +332,6 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 	password := c.PostForm("password")
-	fmt.Println("userId:", user.Id)
-	fmt.Println("password:", password)
 	if len(password) < 6 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -386,7 +378,6 @@ type TotalResp struct {
 }
 
 func Total(c *gin.Context) {
-	fmt.Println("girdi.")
 	db := model.GetDB()
 	//kullanıcı
 	var total int64
@@ -401,10 +392,8 @@ func Total(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bu kısıma girdi.")
 	var ques []map[string]interface{}
 	if err := json.Unmarshal(byteFile, &ques); err != nil {
-		fmt.Println("err:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu2.",
@@ -421,11 +410,8 @@ func Total(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("devaö")
-	fmt.Println("bu kısıma girdi.")
 	person := make(map[string]interface{})
 	if err := json.Unmarshal(byteFile, &person); err != nil {
-		fmt.Println("err:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu2.",
@@ -446,10 +432,8 @@ func Total(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("bu kısıma girdi.")
 	company := make(map[string]interface{})
 	if err := json.Unmarshal(byteFile, &company); err != nil {
-		fmt.Println("err:", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
 			"message": "Bir hata oluştu2.",

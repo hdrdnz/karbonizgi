@@ -3,7 +3,6 @@ package controller
 import (
 	"carbonfootprint/controllers"
 	"carbonfootprint/model"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -22,7 +21,6 @@ type Admin struct {
 var secretKey = []byte("./secret.key")
 
 func AdminLogin(c *gin.Context) {
-	fmt.Println("login kısmına girdi.")
 	db := model.GetDB()
 	var login Admin
 	if err := c.ShouldBindJSON(&login); err != nil {
@@ -40,8 +38,6 @@ func AdminLogin(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("login:", login)
-
 	if admin.Id == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -189,7 +185,6 @@ func UpdateAdmin(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println("admin:", admin)
 	if err := db.Where("id=?", adminId).First(&recAdmin).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "error",
@@ -229,13 +224,9 @@ func UpdateAdmin(c *gin.Context) {
 }
 
 func AdminResetPassword(c *gin.Context) {
-	fmt.Println("GİRDİİİİ")
 	db := model.GetDB()
 	adminId := c.Param("admin_id")
-	fmt.Println("adminId:", adminId)
 	password := c.PostForm("password")
-	fmt.Println("password:", password)
-
 	recAdmin := model.Admin{}
 	if err := db.Where("id=?", adminId).First(&recAdmin).Error; err != nil && err != gorm.ErrRecordNotFound {
 		c.JSON(http.StatusBadRequest, gin.H{

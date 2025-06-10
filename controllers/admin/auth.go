@@ -16,17 +16,14 @@ var AdminClaims jwt.MapClaims
 
 func AdminRequireAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("admin kontrole girdi.")
 		db := model.GetDB()
 		custom := c.GetHeader("X-Admin-Token")
-		fmt.Println("custom:", custom)
 		config := config.GetConfig()
 		if custom == "" || custom != config.Custom.Admin {
 			c.AbortWithStatusJSON(http.StatusBadRequest, nil)
 			return
 		}
 		auth := c.GetHeader("Authorization")
-		fmt.Println("auth:", auth)
 		if auth == "" || !strings.HasPrefix(auth, "Bearer ") {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
@@ -36,7 +33,6 @@ func AdminRequireAuth() gin.HandlerFunc {
 		}
 
 		tokenString := strings.TrimPrefix(auth, "Bearer ")
-		fmt.Println("tokenString:", tokenString)
 		token, err := AdminValidateToken(tokenString)
 		if err != nil {
 			if strings.Contains(err.Error(), "token is expired") {

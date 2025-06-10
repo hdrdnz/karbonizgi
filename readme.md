@@ -1,6 +1,6 @@
 # 🌱 Karbonİzgi
 
-**Karbonİzgi**, bireysel ve kurumsal kullanıcıların karbon ayak izini hesaplayıp azaltmalarına yardımcı olan, sürdürülebilir yaşamı destekleyen kapsamlı bir mobil ve web uygulamasıdır.
+**Karbonİzgi**, bireysel ve kurumsal kullanıcıların karbon ayak izini hesaplayıp azaltmalarına yardımcı olan, sürdürülebilir yaşamı destekleyen kapsamlı bir mobil uygulamasıdır.
 
 ## 🚀 Özellikler
 
@@ -33,14 +33,6 @@
 3. AI destekli sohbet ekranında öneriler sunulur
 4. Grafik kısmında kişiselleştirilmiş grafik detaylarına ulaşır.
 5. Profil kısmında genel skor durumunu ve sıralamasını görür.
-
----
-
-## 📱 Mobil Uygulama
-
-- Flutter tabanlı modern kullanıcı arayüzü
-- Google Play Store üzerinden yayınlama süreci devam etmektedir.
-- Dinamik içerikler, animasyonlu ikonlar ve kullanıcı dostu tasarım
 
 ---
 
